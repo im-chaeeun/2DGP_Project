@@ -1,18 +1,5 @@
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_RIGHT, SDLK_LEFT, SDLK_a, get_time
-import math
-
-# define event check functions
-def a_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
-
-
-def space_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
-
-
-def time_out(e):
-    return e[0] == 'TIME_OUT'
-
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_RIGHT, SDLK_LEFT
+from sdl2 import SDLK_DOWN, SDLK_UP
 
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
@@ -29,14 +16,25 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+def down_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
+
+def down_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
+
+def up_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+
+def up_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
 
 class Walk:
     @staticmethod
     def enter(player1, e):
         if right_down(e) or left_up(e):  # 우측으로 Walk
-            player1.dir, player1.action = 1, 1
+            player1.dir, player1.action = 1, 2
         elif left_down(e) or right_up(e):  # 좌측으로 Walk
-            player1.dir, player1.action = -1, 0
+            player1.dir, player1.action = -1, 2
 
     @staticmethod
     def exit(player1, e):
@@ -50,75 +48,131 @@ class Walk:
 
     @staticmethod
     def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 100, 100, player1.x, player1.y)
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
 
 
 class Idle:
     @staticmethod
-    def enter(boy, e):
-        if boy.action == 0:
-            boy.action = 2
-        elif boy.action == 1:
-            boy.action = 3
-        boy.dir = 0
-        boy.frame = 0
-        boy.idle_start_time = get_time()
+    def enter(player1, e):
+        if player1.action == 0:
+            player1.action = 2
+        elif player1.action == 1:
+            player1.action = 2
+        player1.dir = 1
+        player1.frame = 0
         pass
 
     @staticmethod
-    def exit(boy, e):
+    def exit(player1, e):
         pass
 
     @staticmethod
-    def do(boy):
-        boy.frame = (boy.frame + 1) % 8
-        if get_time() - boy.idle_start_time > 3:
-            boy.state_machine.handle_event(('TIME_OUT', 0))
-        print('IDLE Do')
+    def do(player1):
         pass
 
     @staticmethod
-    def draw(boy):
-        boy.image.clip_draw(boy.frame * 100, boy.action * 100, 100, 100, boy.x, boy.y)
+    def draw(player1):
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        pass
+
+
+class Serve:
+    @staticmethod
+    def enter(player1, e):
+        if player1.action == 0:
+            player1.action = 1
+        elif player1.action == 2:
+            player1.action = 1
+        player1.dir = 0
+        player1.frame = 0
+        pass
+
+    @staticmethod
+    def exit(player1, e):
+        pass
+
+    @staticmethod
+    def do(player1):
+        player1.frame = (player1.frame + 1) % 5
+
+        if player1.frame == 0:  # 프레임이 한 바퀴 돌면
+            player1.state_machine.handle_event(('INPUT', SDL_KEYUP, SDLK_UP))  # 강제로 다음 상태로 전환
+
+        pass
+
+    @staticmethod
+    def draw(player1):
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        pass
+
+class Recieve:
+    @staticmethod
+    def enter(player1, e):
+        if player1.action == 1:
+            player1.action = 0
+        elif player1.action == 2:
+            player1.action = 0
+        player1.dir = 1
+        player1.frame = 0
+        pass
+
+    @staticmethod
+    def exit(player1, e):
+        pass
+
+    @staticmethod
+    def do(player1):
+        player1.frame = (player1.frame + 1) % 5
+
+        if player1.frame == 0:  # 프레임이 한 바퀴 돌면
+            player1.state_machine.handle_event(('INPUT', SDL_KEYUP, SDLK_DOWN))  # 강제로 다음 상태로 전환
+
+    @staticmethod
+    def draw(player1):
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
         pass
 
 
 class StateMachine:
-    def __init__(self, boy):
+    def __init__(self, player1):
         self.cur_state = Idle
-        self.boy = boy
+        self.player1 = player1
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, time_out: Sleep, a_down: AutoRun},
-            Run: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle},
-            Sleep: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Idle},
-            AutoRun: {time_out: Idle, right_down: Run, left_down: Run}
+            Idle: {right_down: Walk, left_down: Walk, left_up: Walk, right_up: Walk,
+                   down_down: Recieve, up_down: Serve, down_up: Idle, up_up: Idle},
+            Walk: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle,  down_down: Recieve,
+                   up_down: Serve, down_up: Walk, up_up: Walk},
+            Recieve: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle,  down_down: Recieve,
+                   up_down: Serve, down_up: Walk, up_up: Walk},
+            Serve: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle,  down_down: Recieve,
+                   up_down: Serve, down_up: Walk, up_up: Walk},
         }
 
     def handle_event(self, e):
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
-                self.cur_state.exit(self.boy, e)
+                self.cur_state.exit(self.player1, e)
                 self.cur_state = next_state
-                self.cur_state.enter(self.boy, e)
+                self.cur_state.enter(self.player1, e)
                 return True
         return False
 
     def start(self):
-        self.cur_state.enter(self.boy, ('NONE', 0))
+        self.cur_state.enter(self.player1, ('NONE', 0))
 
     def update(self):
-        self.cur_state.do(self.boy)
+        self.cur_state.do(self.player1)
 
     def draw(self):
-        self.cur_state.draw(self.boy)
+        self.cur_state.draw(self.player1)
 
 
-class Boy:
+class Player1:
     def __init__(self):
-        self.x, self.y = 400, 90
+        self.x, self.y = 200, 200
         self.frame = 0
-        self.action = 3
-        self.image = load_image('animation_sheet.png')
+        self.image = load_image('character.png')
+        self.action = 0  # 'action' 속성 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
