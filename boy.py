@@ -3,6 +3,7 @@ from pico2d import *
 open_canvas()
 
 character = load_image('character.png')
+badminton_court = load_image('badminton_court_background.png')
 
 SCREEN_WIDTH = 800  # 스크린 사이즈 설정
 SCREEN_HEIGHT = 600
@@ -37,7 +38,10 @@ frame = 0
 
 while running:
     clear_canvas()
+
+    badminton_court.draw(SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
     character.clip_draw(frame * 50, 100, 50, 50, x, y, 300, 300)
+
     update_canvas()
     handle_events()
     frame = (frame + 1) % 5
