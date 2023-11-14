@@ -41,7 +41,8 @@ class Walk:
     @staticmethod
     def do(player2):
         player2.frame = (player2.frame + 1) % 5
-        player2.x += player2.dir * 1
+        delay(0.03)
+        player2.x += player2.dir * 5
         pass
 
     @staticmethod
@@ -173,6 +174,7 @@ class Player2:
         self.frame = 0
         self.image = load_image('character.png')
         self.action = 0  # 'action' 속성 추가
+        self.score = 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 

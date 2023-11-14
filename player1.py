@@ -1,7 +1,6 @@
 from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 
-
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
 
@@ -40,7 +39,8 @@ class Walk:
     @staticmethod
     def do(player1):
         player1.frame = (player1.frame + 1) % 5
-        player1.x += player1.dir * 1
+        delay(0.03)
+        player1.x += player1.dir * 5
         pass
 
     @staticmethod
@@ -172,6 +172,7 @@ class Player1:
         self.frame = 0
         self.image = load_image('character.png')
         self.action = 0  # 'action' 속성 추가
+        self.score = 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
