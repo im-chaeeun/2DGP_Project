@@ -1,5 +1,6 @@
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_RIGHT, SDLK_LEFT
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
 from sdl2 import SDLK_DOWN, SDLK_UP
+
 
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
@@ -130,8 +131,8 @@ class Recieve:
     def do(player1):
         player1.frame = (player1.frame + 1) % 5
 
-        if player1.frame == 0:  # 프레임이 한 바퀴 돌면
-            player1.state_machine.handle_event(('INPUT', SDL_KEYUP, SDLK_DOWN))  # 강제로 다음 상태로 전환
+        # if player1.frame == 0:  # 프레임이 한 바퀴 돌면
+        #     player1.state_machine.handle_event(('INPUT', SDL_KEYUP, SDLK_DOWN))  # 강제로 다음 상태로 전환
 
     @staticmethod
     def draw(player1):
