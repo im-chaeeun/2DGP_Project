@@ -5,6 +5,7 @@ import game_framework
 
 import game_world
 from player1 import Player1
+from player2 import Player2
 from court import Court
 from ball import Ball
 
@@ -18,10 +19,11 @@ def handle_events():
             game_framework.quit()
         else:
             player1.handle_event(event)
+            player2.handle_event(event)
 
 def init():
     global grass
-    global player1
+    global player1, player2
     # global balls
 
     running = True
@@ -31,6 +33,8 @@ def init():
 
     player1 = Player1()
     game_world.add_object(player1, 1)
+    player2 = Player2()
+    game_world.add_object(player2, 1)
 
 
 

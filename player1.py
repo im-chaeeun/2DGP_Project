@@ -1,30 +1,29 @@
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT, delay, clamp
-from sdl2 import SDLK_DOWN, SDLK_UP, SDL_Event
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp
+from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 
 
 def right_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
 
 
 def right_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_d
 
 
 def left_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
 
 
 def left_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a
 
 
 def down_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_s
 
 
 def up_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
-
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
 
 class Walk:
     @staticmethod
@@ -180,7 +179,7 @@ class Player1:
         self.state_machine.update()
 
         # x 좌표 범위 제한
-        self.x = clamp(100 - 10, self.x, 400 - 40)
+        self.x = clamp(100 - 10, self.x, 400 - 50)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))

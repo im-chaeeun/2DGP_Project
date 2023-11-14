@@ -19,7 +19,7 @@ def finish():
 
 def update():
     global running
-    if get_time() - logo_start_time >= 2.0:
+    if get_time() - logo_start_time >= 1.5:
         game_framework.change_mode(play_mode)
     pass
 
