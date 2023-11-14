@@ -1,5 +1,5 @@
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
-from sdl2 import SDLK_DOWN, SDLK_UP
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT, delay, clamp
+from sdl2 import SDLK_DOWN, SDLK_UP, SDL_Event
 
 
 def right_down(e):
@@ -22,16 +22,8 @@ def down_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
 
 
-def down_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
-
-
 def up_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
-
-
-def up_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
 
 
 class Walk:
@@ -49,7 +41,7 @@ class Walk:
     @staticmethod
     def do(player1):
         player1.frame = (player1.frame + 1) % 5
-        player1.x += player1.dir * 10
+        player1.x += player1.dir * 1
         pass
 
     @staticmethod
@@ -100,9 +92,7 @@ class Serve:
     @staticmethod
     def do(player1):
         player1.frame = (player1.frame + 1) % 5
-
-        if player1.frame == 4:  # 프레임이 한 바퀴 돌면
-            player1.state_machine.handle_event(('INPUT', SDL_KEYUP, SDLK_UP))  # 강제로 다음 상태로 전환
+        delay(0.1)
 
         pass
 
@@ -129,10 +119,8 @@ class Recieve:
 
     @staticmethod
     def do(player1):
+        delay(0.1)
         player1.frame = (player1.frame + 1) % 5
-
-        # if player1.frame == 0:  # 프레임이 한 바퀴 돌면
-        #     player1.state_machine.handle_event(('INPUT', SDL_KEYUP, SDLK_DOWN))  # 강제로 다음 상태로 전환
 
     @staticmethod
     def draw(player1):
@@ -146,13 +134,11 @@ class StateMachine:
         self.player1 = player1
         self.transitions = {
             Idle: {right_down: Walk, left_down: Walk, left_up: Walk, right_up: Walk,
-                   down_down: Recieve, up_down: Serve, down_up: Idle, up_up: Idle},
-            Walk: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle,  down_down: Recieve,
-                   up_down: Serve, down_up: Walk, up_up: Walk},
-            Recieve: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle,  down_down: Recieve,
-                   up_down: Serve, down_up: Walk, up_up: Walk},
-            Serve: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle,  down_down: Recieve,
-                   up_down: Serve, down_up: Walk, up_up: Walk},
+                   down_down: Recieve, up_down: Serve},
+            Walk: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle,
+                   down_down: Recieve, up_down: Serve},
+            Recieve: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle},
+            Serve: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle},
         }
 
     def handle_event(self, e):
@@ -170,6 +156,13 @@ class StateMachine:
     def update(self):
         self.cur_state.do(self.player1)
 
+        # 한 프레임이 끝났을 때 Idle 상태로 전환
+        if self.cur_state == Serve or self.cur_state == Recieve:
+            if self.player1.frame == 4:
+                self.cur_state.exit(self.player1, ('NONE', 0))
+                self.cur_state = Idle
+                self.cur_state.enter(self.player1, ('NONE', 0))
+
     def draw(self):
         self.cur_state.draw(self.player1)
 
@@ -185,6 +178,9 @@ class Player1:
 
     def update(self):
         self.state_machine.update()
+
+        # x 좌표 범위 제한
+        self.x = clamp(100 - 10, self.x, 400 - 40)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
