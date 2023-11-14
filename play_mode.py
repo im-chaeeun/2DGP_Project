@@ -8,7 +8,7 @@ from player1 import Player1
 from player2 import Player2
 from court import Court
 from scorebox import Scorebox
-from ball import Ball
+from shuttlecock import Shuttlecock
 
 
 def handle_events():
@@ -26,7 +26,7 @@ def init():
     global grass
     global player1, player2
     global scorebox
-    # global balls
+    global shuttlecock
 
     running = True
 
@@ -38,8 +38,11 @@ def init():
     player2 = Player2()
     game_world.add_object(player2, 1)
 
+    shuttlecock = Shuttlecock()
+    game_world.add_object(shuttlecock, 2)
+
     scorebox = Scorebox()
-    game_world.add_object(scorebox, 2)
+    game_world.add_object(scorebox, 3)
 
 
 def finish():
