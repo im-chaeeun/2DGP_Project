@@ -1,7 +1,9 @@
 from pico2d import *
 
+import game_world
 from court import Court
 from player1 import Player1
+
 
 def handle_events():
     global running
@@ -23,31 +25,31 @@ def reset_world():
     global player1
 
     running = True
-    world = []
 
     court = Court()
-    world.append(court)
+    game_world.add_object(court, 0)
 
     player1 = Player1()
-    world.append(player1)
+    game_world.add_object(player1, 1)
+
+    # ball = Ball()
+    # game_world.add_object(ball, 1)
 
 
 
 def update_world():
-    for o in world:
-        o.update()
-    pass
+    game_world.update()
 
 
 def render_world():
     clear_canvas()
-    for o in world:
-        o.draw()
+    game_world.render()
     update_canvas()
 
 
 open_canvas()
 reset_world()
+
 
 # game loop
 while running:

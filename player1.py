@@ -16,17 +16,22 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+
 def down_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
+
 
 def down_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
 
+
 def up_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
 
+
 def up_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
+
 
 class Walk:
     @staticmethod
@@ -95,7 +100,7 @@ class Serve:
     def do(player1):
         player1.frame = (player1.frame + 1) % 5
 
-        if player1.frame == 0:  # 프레임이 한 바퀴 돌면
+        if player1.frame == 4:  # 프레임이 한 바퀴 돌면
             player1.state_machine.handle_event(('INPUT', SDL_KEYUP, SDLK_UP))  # 강제로 다음 상태로 전환
 
         pass
@@ -105,6 +110,7 @@ class Serve:
         player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
         pass
 
+
 class Recieve:
     @staticmethod
     def enter(player1, e):
@@ -112,7 +118,7 @@ class Recieve:
             player1.action = 0
         elif player1.action == 2:
             player1.action = 0
-        player1.dir = 1
+        player1.dir = 0
         player1.frame = 0
         pass
 
