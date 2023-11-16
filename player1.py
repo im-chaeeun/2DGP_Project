@@ -1,3 +1,15 @@
+PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
+RUN_SPEED_KMPH = 20.0   # 20km/h
+RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0  # 분당 몇 m?
+RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
+RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 5
+FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
+
+import game_framework
 from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 
@@ -38,14 +50,14 @@ class Walk:
 
     @staticmethod
     def do(player1):
-        player1.frame = (player1.frame + 1) % 5
-        delay(0.03)
-        player1.x += player1.dir * 5
+        player1.frame = (player1.frame + FRAMES_PER_TIME * game_framework.frame_time) % 5
+        delay(0.01)
+        player1.x += player1.dir * RUN_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
     def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        player1.image.clip_draw(int(player1.frame) * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
 
 
 class Idle:
