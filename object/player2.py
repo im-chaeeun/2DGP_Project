@@ -1,4 +1,4 @@
-import game_framework
+from framework import game_framework
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 20.0   # 20km/h

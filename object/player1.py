@@ -9,7 +9,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 5
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
-import game_framework
+from framework import game_framework
 from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 

@@ -1,7 +1,6 @@
 from pico2d import load_image, clear_canvas, update_canvas, get_events, get_time
-import game_framework
+from framework import game_framework
 import play_mode
-import title_mode
 
 
 def init():
