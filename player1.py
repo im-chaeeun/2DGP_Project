@@ -1,5 +1,7 @@
+from shuttlecock import Shuttlecock
+
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
-RUN_SPEED_KMPH = 20.0   # 20km/h
+RUN_SPEED_KMPH = 25.0   # 20km/h
 RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0  # 분당 몇 m?
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
@@ -9,7 +11,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 5
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
-from framework import game_framework
+import game_framework
 from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 
@@ -188,15 +190,26 @@ class Player1:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
+        # Shuttlecock 객체 생성
+        self.shuttlecock = Shuttlecock()
+
     def update(self):
         self.state_machine.update()
 
         # x 좌표 범위 제한
         self.x = clamp(100 - 10, self.x, 400 - 50)
 
+        # Shuttlecock 업데이트
+        self.shuttlecock.update()
+
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
-        pass
+
+        # Shuttlecock 이벤트 처리
+        self.shuttlecock.handle_event(event)
 
     def draw(self):
         self.state_machine.draw()
+
+        # Shuttlecock 그리기
+        self.shuttlecock.draw()

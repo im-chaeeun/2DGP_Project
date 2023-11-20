@@ -1,7 +1,7 @@
 from pico2d import load_image, load_font
 
-from object.player1 import Player1
-from object.player2 import Player2
+from player1 import Player1
+from player2 import Player2
 
 
 class Scorebox:

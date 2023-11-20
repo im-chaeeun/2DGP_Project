@@ -1,10 +1,12 @@
 from pico2d import *
+
+import game_framework
 import game_world
 
 class Shuttlecock:
     image = None
 
-    def __init__(self, x = 400, y = 300, velocity = 0):
+    def __init__(self, x = 250, y = 300, velocity = 10):
         if Shuttlecock.image == None:
             Shuttlecock.image = load_image('shuttlecock.png')
         self.x, self.y, self.velocity = x, y, velocity
@@ -13,7 +15,8 @@ class Shuttlecock:
         self.image.clip_draw(0, 0, 7, 8, self.x, self.y, 28, 32)
 
     def update(self):
-        self.x += self.velocity
+        self.x += self.velocity * game_framework.frame_time
 
-        if self.x < 25 or self.x > 1600 - 25:
-            game_world.remove_object(self)
+    def handle_event(self, event):
+        # Shuttlecock 이벤트 처리 추가
+        pass

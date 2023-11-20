@@ -1,7 +1,8 @@
-from framework import game_framework
+import game_framework
+from shuttlecock import Shuttlecock
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
-RUN_SPEED_KMPH = 20.0   # 20km/h
+RUN_SPEED_KMPH = 25.0   # 20km/h
 RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0  # 분당 몇 m?
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
@@ -190,16 +191,25 @@ class Player2:
         self.score = 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-
+        # Shuttlecock 객체 생성
+        self.shuttlecock = Shuttlecock()
     def update(self):
         self.state_machine.update()
 
         # x 좌표 범위 제한
         self.x = clamp(400 + 50, self.x, 700 - 10)
 
+        # Shuttlecock 업데이트
+        self.shuttlecock.update()
+
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
-        pass
+
+        # Shuttlecock 이벤트 처리
+        self.shuttlecock.handle_event(event)
 
     def draw(self):
         self.state_machine.draw()
+
+        # Shuttlecock 그리기
+        self.shuttlecock.draw()
