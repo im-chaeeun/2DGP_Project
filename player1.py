@@ -96,6 +96,7 @@ class Serve:
             player1.action = 1
         player1.dir = 0
         player1.frame = 0
+        # print("Serve state")  # 디버깅용 출력
         pass
 
     @staticmethod
@@ -106,7 +107,7 @@ class Serve:
     def do(player1):
         player1.frame = (player1.frame + 1) % 5
         delay(0.1)
-
+        # print("Serve state")  # 디버깅용 출력
         pass
 
     @staticmethod
@@ -168,7 +169,6 @@ class StateMachine:
 
     def update(self):
         self.cur_state.do(self.player1)
-
         # 한 프레임이 끝났을 때 Idle 상태로 전환
         if self.cur_state == Serve or self.cur_state == Recieve:
             if self.player1.frame == 4:
@@ -176,9 +176,9 @@ class StateMachine:
                 self.cur_state = Idle
                 self.cur_state.enter(self.player1, ('NONE', 0))
 
+
     def draw(self):
         self.cur_state.draw(self.player1)
-
 
 class Player1:
     def __init__(self):
@@ -189,55 +189,43 @@ class Player1:
         self.score = 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-
+        # state 추가
+        self.state = 'Idle'
         # Shuttlecock 객체 생성
         self.shuttlecock = Shuttlecock()
+        # Racket1 객체 생성
+        self.racket1 = Racket1(self.x, self.y)
 
     def update(self):
         self.state_machine.update()
-
         # x 좌표 범위 제한
         self.x = clamp(100 - 10, self.x, 400 - 50)
+
+        # Serve 상태일 때 라켓 업데이트
+        if self.state_machine.cur_state == Serve:
+            self.racket1.update_serve()
 
         # Shuttlecock 업데이트
         self.shuttlecock.update()
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
-
         # Shuttlecock 이벤트 처리
         self.shuttlecock.handle_event(event)
 
     def draw(self):
         self.state_machine.draw()
-
         # Shuttlecock 그리기
         self.shuttlecock.draw()
-
         # 충돌 체크
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        # Idle 상태일 떄
-        return self.x + 40, self.y + 10, self.x + 70, self.y + 40  # 튜플로 전환됨
-
-        #elif self.state == 'Serve':
-
-        # Serve 상태일 때의 충돌 처리 박스 설정
-        # return self.racket_x - ?, self.racket_y - ?, self.racket_x + ?, self.racket_y + ?
-        # elif self.state == 'Recieve':
-
-        # Recieve 상태일 때의 충돌 처리 박스 설정
-        # return self.x + ?, self.y + ?, self.x + ?, self.y + ?
-
-
-class Racket_player1:
-    def __init__(self):
-        self.racket_x = 0  # 라켓의 초기 x 위치
-        self.racket_y = 0  # 라켓의 초기 y 위치
-
-    def update(self):
+        # if self.state == 'Idle':
+        #     return self.x + 40, self.y + 10, self.x + 70, self.y + 40
         if self.state == 'Serve':
-            # Serve 상태에서 라켓의 위치를 업데이트
-            self.racket_x += self.racket_speed * game_framework.frame_time
-            self.racket_y += self.racket_speed * game_framework.frame_time
+            # Serve 상태일 때의 충돌 처리 박스 설정
+            return self.x + 30, self.y - 20, self.x + 60, self.y + 10
+        else:
+            # 다른 상태이거나 상태가 정의되지 않았을 때의 기본값
+            return self.x, self.y, self.x, self.y
