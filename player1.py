@@ -12,7 +12,7 @@ FRAMES_PER_ACTION = 5
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
 import game_framework
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp, draw_rectangle
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 
 def right_down(e):
@@ -213,3 +213,31 @@ class Player1:
 
         # Shuttlecock 그리기
         self.shuttlecock.draw()
+
+        # 충돌 체크
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        # Idle 상태일 떄
+        return self.x + 40, self.y + 10, self.x + 70, self.y + 40  # 튜플로 전환됨
+
+        #elif self.state == 'Serve':
+
+        # Serve 상태일 때의 충돌 처리 박스 설정
+        # return self.racket_x - ?, self.racket_y - ?, self.racket_x + ?, self.racket_y + ?
+        # elif self.state == 'Recieve':
+
+        # Recieve 상태일 때의 충돌 처리 박스 설정
+        # return self.x + ?, self.y + ?, self.x + ?, self.y + ?
+
+
+class Racket_player1:
+    def __init__(self):
+        self.racket_x = 0  # 라켓의 초기 x 위치
+        self.racket_y = 0  # 라켓의 초기 y 위치
+
+    def update(self):
+        if self.state == 'Serve':
+            # Serve 상태에서 라켓의 위치를 업데이트
+            self.racket_x += self.racket_speed * game_framework.frame_time
+            self.racket_y += self.racket_speed * game_framework.frame_time
