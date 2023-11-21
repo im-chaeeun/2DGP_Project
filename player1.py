@@ -193,19 +193,24 @@ class Player1:
         self.state = 'Idle'
         # Shuttlecock 객체 생성
         self.shuttlecock = Shuttlecock()
-        # Racket1 객체 생성
-        self.racket1 = Racket1(self.x, self.y)
+        # 라켓의 충돌 체크 박스 (self.x로 값 설정 못함??)
+        self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
+
 
     def update(self):
         self.state_machine.update()
-        # x 좌표 범위 제한
+        # 플레이어의 x 좌표 범위 제한
         self.x = clamp(100 - 10, self.x, 400 - 50)
 
         # Serve 상태일 때 라켓 업데이트
         if self.state_machine.cur_state == Serve:
-            self.racket1.update_serve()
+            # print('서브!!!!')
+            self.racket_x1, self.racket_x2 = self.x + 30, self.x + 60
+            self.racket_y1, self.racket_y2 = self.y - 20, self.y + 10
+        elif self.state_machine.cur_state == Recieve:
+            print('리시브!!!!')
 
-        # Shuttlecock 업데이트
+        # Shuttlecock 움직임 업데이트
         self.shuttlecock.update()
 
     def handle_event(self, event):
@@ -217,15 +222,20 @@ class Player1:
         self.state_machine.draw()
         # Shuttlecock 그리기
         self.shuttlecock.draw()
-        # 충돌 체크
+        # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
 
+
     def get_bb(self):
-        # if self.state == 'Idle':
-        #     return self.x + 40, self.y + 10, self.x + 70, self.y + 40
-        if self.state == 'Serve':
-            # Serve 상태일 때의 충돌 처리 박스 설정
-            return self.x + 30, self.y - 20, self.x + 60, self.y + 10
+        #if self.state == 'Idle':
+        if self.state_machine.cur_state == Idle:
+            # print('아이들')
+            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+        if self.state_machine.cur_state == Serve:
+            print('서브 겟비비')
+            self.racket_x1, self.racket_y1 = self.x + 30, self.y - 20
+            self.racket_x2, self.racket_y2 = self.x + 60, self.y + 10
+            return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
         else:
             # 다른 상태이거나 상태가 정의되지 않았을 때의 기본값
             return self.x, self.y, self.x, self.y
