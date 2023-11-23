@@ -6,23 +6,38 @@ import game_world
 class Shuttlecock:
     image = None
 
-    def __init__(self, x=250, y=300, velocity=2):
+    def __init__(self, x = 260, y = 250, velocity = 2, angle = 45):
         if Shuttlecock.image is None:
             Shuttlecock.image = load_image('shuttlecock.png')
         self.x, self.y, self.velocity = x, y, velocity
-        self.racket_x = 0  # 라켓의 초기 x 위치
-        self.racket_y = 0  # 라켓의 초기 y 위치
-        self.racket_speed = 50  # 라켓의 이동 속도
+        self.angle = angle
+        self.gravity = 9.8  # 중력 가속도
+        self.time = 0
+        self.is_flying = False
 
     def draw(self):
-        self.image.clip_draw(0, 0, 7, 8, self.x + self.racket_x, self.y + self.racket_y, 28, 32)
+        self.image.clip_draw(0, 0, 7, 8, self.x, self.y, 28, 32)
+        # if self.is_flying:
+        #     self.image.clip_draw(0, 0, 7, 8, self.x + self.racket_x, self.y + self.racket_y, 28, 32)
+        #     # draw_rectangle(self.x - 5, self.y - 5, self.x + 5, self.y + 5)
+        # else:
+        #     draw_rectangle(self.x - 10, self.y - 10, self.x + 10, self.y + 10)
 
     def update(self):
-        self.x += self.velocity
+        if self.is_flying:
+            self.time += 0.1
+            self.x = self.x + self.velocity * math.cos(self.angle) * self.time
+            self.y = self.y + self.velocity * math.sin(self.angle) * self.time - 0.5 * self.gravity * self.time ** 2
+            if self.y < 0:
+                self.is_flying = False
+                self.time = 0
+        pass
 
-        # 라켓 위치 업데이트
-        self.racket_x += self.racket_speed * game_framework.frame_time
-        self.racket_y += self.racket_speed * game_framework.frame_time
+    def hit(self, racket_x, racket_y):
+        if not self.is_flying:
+            self.is_flying = True
+            self.x, self.y = racket_x, racket_y
+            self.angle = math.radians(45)  # 45도 각도로 발사
 
     def handle_event(self, event):
         # Shuttlecock 이벤트 처리 추가

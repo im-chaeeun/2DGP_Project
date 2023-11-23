@@ -113,6 +113,8 @@ class Serve:
         player1.frame = (player1.frame + 1) % 5
         player1.racket_x1 += 3
         player1.racket_x2 += 3
+        player1.racket_y1 += 7
+        player1.racket_y2 += 7
         delay(0.1)
         # print("Serve state")  # 디버깅용 출력
         pass
