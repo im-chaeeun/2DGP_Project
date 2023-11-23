@@ -88,6 +88,7 @@ class Idle:
 
 
 class Serve:
+    global racket
     @staticmethod
     def enter(player1, e):
         if player1.action == 0:
@@ -97,7 +98,11 @@ class Serve:
         player1.dir = 0
         player1.frame = 0
         # print("Serve state")  # 디버깅용 출력
-        pass
+
+        # get_bb를 위한 라켓값을 enter할 때 받아서 do에서 수정하도록!
+        player1.racket_x1, player1.racket_y1 = player1.x + 45, player1.y - 20
+        player1.racket_x2, player1.racket_y2 = player1.x + 75, player1.y + 10
+
 
     @staticmethod
     def exit(player1, e):
@@ -106,6 +111,8 @@ class Serve:
     @staticmethod
     def do(player1):
         player1.frame = (player1.frame + 1) % 5
+        player1.racket_x1 += 3
+        player1.racket_x2 += 3
         delay(0.1)
         # print("Serve state")  # 디버깅용 출력
         pass
@@ -125,6 +132,10 @@ class Recieve:
             player1.action = 0
         player1.dir = 0
         player1.frame = 0
+
+        # do에서 수정할 수 있도록 라켓의 위치를 받아옴
+        player1.racket_x1, player1.racket_y1 = player1.x - 80, player1.y + 65
+        player1.racket_x2, player1.racket_y2 = player1.x - 50, player1.y + 95
         pass
 
     @staticmethod
@@ -133,8 +144,12 @@ class Recieve:
 
     @staticmethod
     def do(player1):
-        delay(0.1)
         player1.frame = (player1.frame + 1) % 5
+        player1.racket_x1 += 20
+        player1.racket_x2 += 20
+        player1.racket_y1 -= 3
+        player1.racket_y2 -= 3
+        delay(0.1)
 
     @staticmethod
     def draw(player1):
@@ -202,14 +217,6 @@ class Player1:
         # 플레이어의 x 좌표 범위 제한
         self.x = clamp(100 - 10, self.x, 400 - 50)
 
-        # Serve 상태일 때 라켓 업데이트
-        if self.state_machine.cur_state == Serve:
-            # print('서브!!!!')
-            self.racket_x1, self.racket_x2 = self.x + 30, self.x + 60
-            self.racket_y1, self.racket_y2 = self.y - 20, self.y + 10
-        elif self.state_machine.cur_state == Recieve:
-            print('리시브!!!!')
-
         # Shuttlecock 움직임 업데이트
         self.shuttlecock.update()
 
@@ -233,11 +240,7 @@ class Player1:
             return self.x + 40, self.y + 10, self.x + 70, self.y + 40
         elif self.state_machine.cur_state == Serve:
             print('서브 겟비비')
-            self.racket_x1, self.racket_y1 = self.x + 45, self.y - 20
-            self.racket_x2, self.racket_y2 = self.x + 75, self.y + 10
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
         elif self.state_machine.cur_state == Recieve:
             print('리시브 겟비비')
-            self.racket_x1, self.racket_y1 = self.x - 10, self.y + 55
-            self.racket_x2, self.racket_y2 = self.x + 20, self.y + 85
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
