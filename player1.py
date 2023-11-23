@@ -227,15 +227,17 @@ class Player1:
 
 
     def get_bb(self):
-        #if self.state == 'Idle':
         if self.state_machine.cur_state == Idle:
-            # print('아이들')
             return self.x + 40, self.y + 10, self.x + 70, self.y + 40
-        if self.state_machine.cur_state == Serve:
+        elif self.state_machine.cur_state == Walk:
+            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+        elif self.state_machine.cur_state == Serve:
             print('서브 겟비비')
-            self.racket_x1, self.racket_y1 = self.x + 30, self.y - 20
-            self.racket_x2, self.racket_y2 = self.x + 60, self.y + 10
+            self.racket_x1, self.racket_y1 = self.x + 45, self.y - 20
+            self.racket_x2, self.racket_y2 = self.x + 75, self.y + 10
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
-        else:
-            # 다른 상태이거나 상태가 정의되지 않았을 때의 기본값
-            return self.x, self.y, self.x, self.y
+        elif self.state_machine.cur_state == Recieve:
+            print('리시브 겟비비')
+            self.racket_x1, self.racket_y1 = self.x - 10, self.y + 55
+            self.racket_x2, self.racket_y2 = self.x + 20, self.y + 85
+            return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
