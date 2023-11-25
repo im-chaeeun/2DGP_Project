@@ -25,8 +25,7 @@ class Shuttlecock:
         if self.is_flying:
             self.time += 0.1
             self.x = self.x + self.velocity * math.cos(self.angle) * self.time
-            self.y = self.y + self.velocity * math.sin(
-                self.angle) * self.time - 0.5 * self.gravity * self.time ** 2 * 0.5
+            self.y = self.y + self.velocity * math.sin(self.angle) * self.time - 0.5 * self.gravity * self.time ** 2 * 0.5
 
             # Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
             self.y = max(self.y, 70)
