@@ -117,8 +117,13 @@ class Serve:
         player1.racket_y2 += 7
         delay(0.1)
         # print("Serve state")  # 디버깅용 출력
-        pass
 
+        # 프레임이 특정 값에 도달하면 공을 발사
+        if player1.frame == 3:
+            player1.shuttlecock.hit(player1.racket_x1, player1.racket_y1)
+
+            # 공이 발사된 이후 위치 제한
+            player1.shuttlecock.y = max(player1.shuttlecock.y, 50)  # 바닥 아래로 떨어지지 않도록 제한
     @staticmethod
     def draw(player1):
         player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
@@ -136,8 +141,8 @@ class Recieve:
         player1.frame = 0
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
-        player1.racket_x1, player1.racket_y1 = player1.x - 80, player1.y + 65
-        player1.racket_x2, player1.racket_y2 = player1.x - 50, player1.y + 95
+        player1.racket_x1, player1.racket_y1 = player1.x - 120, player1.y + 65
+        player1.racket_x2, player1.racket_y2 = player1.x - 90, player1.y + 95
         pass
 
     @staticmethod
