@@ -118,12 +118,7 @@ class Serve:
         delay(0.1)
         # print("Serve state")  # 디버깅용 출력
 
-        # 프레임이 특정 값에 도달하면 공을 발사
-        if player1.frame == 3:
-            player1.shuttlecock.hit(player1.racket_x1, player1.racket_y1)
 
-            # 공이 발사된 이후 위치 제한
-            player1.shuttlecock.y = max(player1.shuttlecock.y, 50)  # 바닥 아래로 떨어지지 않도록 제한
     @staticmethod
     def draw(player1):
         player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)

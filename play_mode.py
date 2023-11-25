@@ -53,6 +53,11 @@ def update():
     # fill here
     # game_world.handle_collisions()
 
+    if game_world.collide(shuttlecock, player1):
+        print('플레이어1 라켓과 셔틀콕 충돌')
+        shuttlecock.is_flying = True
+        shuttlecock.update()
+
 def draw():
     clear_canvas()
     game_world.render()
