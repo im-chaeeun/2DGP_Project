@@ -4,6 +4,7 @@ import game_framework
 import game_world
 from player_prcatice import Player
 from court import Court
+from practice_machine import Practice_Machine
 from shuttlecock_practice import Shuttlecock_Practice
 
 
@@ -20,6 +21,7 @@ def handle_events():
 def init():
     global player
     global shuttlecock_practice
+    global prctice_machine
 
     running = True
 
@@ -32,6 +34,8 @@ def init():
     shuttlecock_practice = Shuttlecock_Practice()
     game_world.add_object(shuttlecock_practice, 2)
 
+    practice_machine = Practice_Machine()
+    game_world.add_object(practice_machine, 2)
 
 
 def finish():
