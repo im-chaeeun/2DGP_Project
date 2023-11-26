@@ -2,15 +2,15 @@ from pico2d import *
 import math
 import game_framework
 import game_world
-import player1
+import player1_competition
 
 
-class Shuttlecock:
+class Shuttlecock_Practice:
     image = None
 
     def __init__(self):
-        if Shuttlecock.image is None:
-            Shuttlecock.image = load_image('shuttlecock.png')
+        if Shuttlecock_Practice.image is None:
+            Shuttlecock_Practice.image = load_image('shuttlecock.png')
         self.x, self.y, self.velocity = 260, 265, 2
         self.angle = math.radians(45)  # 초기 각도 설정
         self.gravity = 9.8  # 중력 가속도

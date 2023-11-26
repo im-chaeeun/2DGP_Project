@@ -1,4 +1,4 @@
-from shuttlecock import Shuttlecock
+from shuttlecock_practice import Shuttlecock_Practice
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 25.0   # 20km/h
@@ -197,19 +197,18 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player1)
 
-class Player1:
+class Player:
     def __init__(self):
         self.x, self.y = 200, 200
         self.frame = 0
         self.image = load_image('character.png')
         self.action = 0  # 'action' 속성 추가
-        self.score = 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         # state 추가
         self.state = 'Idle'
         # Shuttlecock 객체 생성
-        self.shuttlecock = Shuttlecock()
+        self.shuttlecock_practice = Shuttlecock_Practice()
         # 라켓의 충돌 체크 박스 (self.x로 값 설정 못함??)
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
 

@@ -2,11 +2,11 @@ from pico2d import *
 import game_framework
 
 import game_world
-from player1 import Player1
-from player2 import Player2
+from player1_competition import Player1
+from player2_competition import Player2
 from court import Court
 from scorebox import Scorebox
-from shuttlecock import Shuttlecock
+from shuttlecock_competition import Shuttlecock
 
 
 def handle_events():

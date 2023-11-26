@@ -1,5 +1,5 @@
 import game_framework
-from shuttlecock import Shuttlecock
+from shuttlecock_competition import Shuttlecock
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 25.0   # 20km/h
