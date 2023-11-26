@@ -21,7 +21,6 @@ def handle_events():
             player2.handle_event(event)
 
 def init():
-    global grass
     global player1, player2
     global scorebox
     global shuttlecock

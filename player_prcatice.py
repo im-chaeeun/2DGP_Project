@@ -40,37 +40,37 @@ def up_down(e):
 
 class Walk:
     @staticmethod
-    def enter(player1, e):
+    def enter(player, e):
         if right_down(e) or left_up(e):  # 우측으로 Walk
-            player1.dir, player1.action = 1, 2
+            player.dir, player.action = 1, 2
         elif left_down(e) or right_up(e):  # 좌측으로 Walk
-            player1.dir, player1.action = -1, 2
+            player.dir, player.action = -1, 2
 
     @staticmethod
     def exit(player1, e):
         pass
 
     @staticmethod
-    def do(player1):
-        player1.frame = (player1.frame + FRAMES_PER_TIME * game_framework.frame_time) % 5
+    def do(player):
+        player.frame = (player.frame + FRAMES_PER_TIME * game_framework.frame_time) % 5
         delay(0.01)
-        player1.x += player1.dir * RUN_SPEED_PPS * game_framework.frame_time
+        player.x += player.dir * RUN_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
-    def draw(player1):
-        player1.image.clip_draw(int(player1.frame) * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+    def draw(player):
+        player.image.clip_draw(int(player.frame) * 50, player.action * 50, 50, 50, player.x, player.y, 250, 250)
 
 
 class Idle:
     @staticmethod
-    def enter(player1, e):
-        if player1.action == 0:
-            player1.action = 2
-        elif player1.action == 1:
-            player1.action = 2
-        player1.dir = 1
-        player1.frame = 0
+    def enter(player, e):
+        if player.action == 0:
+            player.action = 2
+        elif player.action == 1:
+            player.action = 2
+        player.dir = 1
+        player.frame = 0
         pass
 
     @staticmethod
@@ -78,91 +78,91 @@ class Idle:
         pass
 
     @staticmethod
-    def do(player1):
+    def do(player):
         pass
 
     @staticmethod
-    def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+    def draw(player):
+        player.image.clip_draw(player.frame * 50, player.action * 50, 50, 50, player.x, player.y, 250, 250)
         pass
 
 
 class Serve:
     global racket
     @staticmethod
-    def enter(player1, e):
-        if player1.action == 0:
-            player1.action = 1
-        elif player1.action == 2:
-            player1.action = 1
-        player1.dir = 0
-        player1.frame = 0
+    def enter(player, e):
+        if player.action == 0:
+            player.action = 1
+        elif player.action == 2:
+            player.action = 1
+        player.dir = 0
+        player.frame = 0
         # print("Serve state")  # 디버깅용 출력
 
         # get_bb를 위한 라켓값을 enter할 때 받아서 do에서 수정하도록!
-        player1.racket_x1, player1.racket_y1 = player1.x + 45, player1.y - 20
-        player1.racket_x2, player1.racket_y2 = player1.x + 75, player1.y + 10
+        player.racket_x1, player.racket_y1 = player.x + 45, player.y - 20
+        player.racket_x2, player.racket_y2 = player.x + 75, player.y + 10
 
 
     @staticmethod
-    def exit(player1, e):
+    def exit(player, e):
         pass
 
     @staticmethod
-    def do(player1):
-        player1.frame = (player1.frame + 1) % 5
-        player1.racket_x1 += 3
-        player1.racket_x2 += 3
-        player1.racket_y1 += 13
-        player1.racket_y2 += 13
+    def do(player):
+        player.frame = (player.frame + 1) % 5
+        player.racket_x1 += 3
+        player.racket_x2 += 3
+        player.racket_y1 += 13
+        player.racket_y2 += 13
         delay(0.1)
         # print("Serve state")  # 디버깅용 출력
 
 
     @staticmethod
-    def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+    def draw(player):
+        player.image.clip_draw(player.frame * 50, player.action * 50, 50, 50, player.x, player.y, 250, 250)
         pass
 
 
 class Recieve:
     @staticmethod
-    def enter(player1, e):
-        if player1.action == 1:
-            player1.action = 0
-        elif player1.action == 2:
-            player1.action = 0
-        player1.dir = 0
-        player1.frame = 0
+    def enter(player, e):
+        if player.action == 1:
+            player.action = 0
+        elif player.action == 2:
+            player.action = 0
+        player.dir = 0
+        player.frame = 0
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
-        player1.racket_x1, player1.racket_y1 = player1.x - 120, player1.y + 65
-        player1.racket_x2, player1.racket_y2 = player1.x - 90, player1.y + 95
+        player.racket_x1, player.racket_y1 = player.x - 120, player.y + 65
+        player.racket_x2, player.racket_y2 = player.x - 90, player.y + 95
         pass
 
     @staticmethod
-    def exit(player1, e):
+    def exit(player, e):
         pass
 
     @staticmethod
-    def do(player1):
-        player1.frame = (player1.frame + 1) % 5
-        player1.racket_x1 += 20
-        player1.racket_x2 += 20
-        player1.racket_y1 -= 3
-        player1.racket_y2 -= 3
+    def do(player):
+        player.frame = (player.frame + 1) % 5
+        player.racket_x1 += 20
+        player.racket_x2 += 20
+        player.racket_y1 -= 3
+        player.racket_y2 -= 3
         delay(0.1)
 
     @staticmethod
-    def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+    def draw(player):
+        player.image.clip_draw(player.frame * 50, player.action * 50, 50, 50, player.x, player.y, 250, 250)
         pass
 
 
 class StateMachine:
-    def __init__(self, player1):
+    def __init__(self, player):
         self.cur_state = Idle
-        self.player1 = player1
+        self.player = player
         self.transitions = {
             Idle: {right_down: Walk, left_down: Walk, left_up: Walk, right_up: Walk,
                    down_down: Recieve, up_down: Serve},
@@ -175,27 +175,27 @@ class StateMachine:
     def handle_event(self, e):
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
-                self.cur_state.exit(self.player1, e)
+                self.cur_state.exit(self.player, e)
                 self.cur_state = next_state
-                self.cur_state.enter(self.player1, e)
+                self.cur_state.enter(self.player, e)
                 return True
         return False
 
     def start(self):
-        self.cur_state.enter(self.player1, ('NONE', 0))
+        self.cur_state.enter(self.player, ('NONE', 0))
 
     def update(self):
-        self.cur_state.do(self.player1)
+        self.cur_state.do(self.player)
         # 한 프레임이 끝났을 때 Idle 상태로 전환
         if self.cur_state == Serve or self.cur_state == Recieve:
-            if self.player1.frame == 4:
-                self.cur_state.exit(self.player1, ('NONE', 0))
+            if self.player.frame == 4:
+                self.cur_state.exit(self.player, ('NONE', 0))
                 self.cur_state = Idle
-                self.cur_state.enter(self.player1, ('NONE', 0))
+                self.cur_state.enter(self.player, ('NONE', 0))
 
 
     def draw(self):
-        self.cur_state.draw(self.player1)
+        self.cur_state.draw(self.player)
 
 class Player:
     def __init__(self):
@@ -219,17 +219,17 @@ class Player:
         self.x = clamp(100 - 10, self.x, 400 - 50)
 
         # Shuttlecock 움직임 업데이트
-        self.shuttlecock.update()
+        self.shuttlecock_practice.update()
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
         # Shuttlecock 이벤트 처리
-        self.shuttlecock.handle_event(event)
+        self.shuttlecock_practice.handle_event(event)
 
     def draw(self):
         self.state_machine.draw()
         # Shuttlecock 그리기
-        self.shuttlecock.draw()
+        self.shuttlecock_practice.draw()
         # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
 

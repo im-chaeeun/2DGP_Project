@@ -18,9 +18,7 @@ def handle_events():
             player.handle_event(event)
 
 def init():
-    global grass
     global player
-    global scorebox
     global shuttlecock_practice
 
     running = True
