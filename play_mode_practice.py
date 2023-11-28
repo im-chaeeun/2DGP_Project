@@ -6,7 +6,7 @@ from player_prcatice import Player
 from court import Court
 from practice_machine import Practice_Machine
 from shuttlecock_practice import Shuttlecock_Practice
-
+from arrow_practice_mode import Arrow
 
 def handle_events():
     events = get_events()
@@ -22,6 +22,7 @@ def init():
     global player
     global shuttlecock_practice
     global prctice_machine
+    global arrow
 
     running = True
 
@@ -36,6 +37,9 @@ def init():
 
     practice_machine = Practice_Machine()
     game_world.add_object(practice_machine, 2)
+
+    arrow = Arrow()
+    game_world.add_object(arrow, 3)
 
 
 def finish():
