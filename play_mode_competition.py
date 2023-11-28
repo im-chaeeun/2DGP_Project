@@ -8,6 +8,14 @@ from court import Court
 from scorebox import Scorebox
 from shuttlecock_competition import Shuttlecock
 
+PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
+RUN_SPEED_KMPH = 25.0   # 20km/h
+RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0  # 분당 몇 m?
+RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
+RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
+
+GRAVITY_SPEED_MPS = 9.8
+GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
 
 def handle_events():
     events = get_events()
@@ -55,6 +63,7 @@ def update():
     if game_world.collide(shuttlecock, player1):
         print('플레이어1 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
+        shuttlecock.speed_y = RUN_SPEED_PPS
         shuttlecock.update()
 
 def draw():
