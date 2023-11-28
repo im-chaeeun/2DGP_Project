@@ -2,6 +2,7 @@ import arrow_practice_mode
 import play_mode_practice
 from shuttlecock_practice import Shuttlecock_Practice
 from arrow_practice_mode import Arrow
+# from stamina_bar import Stamina
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 25.0   # 20km/h
@@ -214,7 +215,8 @@ class Player:
         # 라켓의 충돌 체크 박스 (self.x로 값 설정 못함??)
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
         # 화살표 박스 그리기 변수
-        self.select_press = 0
+        # self.select_press = 0
+
 
     def update(self):
         self.state_machine.update()
@@ -236,7 +238,8 @@ class Player:
         self.shuttlecock_practice.draw()
         # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
-
+        # Stamina 바 그리기
+        #self.stamina.draw()
 
 
     def get_bb(self):
@@ -251,19 +254,16 @@ class Player:
             print('리시브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
 
-    def check_press_arrow(self):
-        if self.state_machine.cur_state == Idle:
-            self.select_press = 0
-        elif self.state_machine.cur_state == Walk:
-            self.select_press = 1
-            # if self.dir == -1:
-            #     return 1
-            # elif self.dir == 1:
-            #     return 2
-        # elif self.state_machine.cur_state == Serve:
-        #     print('서브 겟비비')
-        #     return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
-        # elif self.state_machine.cur_state == Recieve:
-        #     print('리시브 겟비비')
-        #     return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
+    # def check_press_arrow(self):
+    #     if self.state_machine.cur_state == Idle:
+    #         self.select_press = 0
+    #     elif self.state_machine.cur_state == Walk:
+    #         self.select_press = 1
+    #     return self.select_press
+    # elif self.state_machine.cur_state == Serve:
+    #     print('서브 겟비비')
+    #     return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
+    # elif self.state_machine.cur_state == Recieve:
+    #     print('리시브 겟비비')
+    #     return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
 

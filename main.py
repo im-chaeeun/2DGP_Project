@@ -1,6 +1,7 @@
 from pico2d import *
 
 import game_framework
+import play_mode_competition
 import play_mode_practice
 import title_mode
 
