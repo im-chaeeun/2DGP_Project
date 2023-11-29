@@ -47,14 +47,18 @@ def init():
     shuttlecock_practice = Shuttlecock_Practice()
     game_world.add_object(shuttlecock_practice, 2)
 
-    practice_machine = Practice_Machine()
-    game_world.add_object(practice_machine, 2)
+    # practice_machine = Practice_Machine()
+    # game_world.add_object(practice_machine, 2)
+    # Practice_Machine 클래스의 인스턴스 생성
+    practice_machine_instance = Practice_Machine()
+    # game_world에 객체 추가
+    game_world.add_object(practice_machine_instance, 2)
 
     #stamina = Stamina()
     #game_world.add_object(stamina, 3)
 
-    # arrow = Arrow()
-    # game_world.add_object(arrow, 3)
+    #arrow = Arrow()
+    #game_world.add_object(arrow, 3)
 
 
 def finish():

@@ -254,12 +254,11 @@ class Player:
             print('리시브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
 
-    # def check_press_arrow(self):
-    #     if self.state_machine.cur_state == Idle:
-    #         self.select_press = 0
-    #     elif self.state_machine.cur_state == Walk:
-    #         self.select_press = 1
-    #     return self.select_press
+    def check_press_arrow(self):
+        if self.state_machine.cur_state == Idle:
+            return 0
+        elif self.state_machine.cur_state == Walk:
+            return 1
     # elif self.state_machine.cur_state == Serve:
     #     print('서브 겟비비')
     #     return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
