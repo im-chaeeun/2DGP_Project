@@ -20,6 +20,7 @@ class Shuttlecock_Practice:
         if Shuttlecock_Practice.image is None:
             Shuttlecock_Practice.image = load_image('shuttlecock.png')
         self.x, self.y, self.velocity = 630, 180, 2
+        self.is_flying = False
         self.time = 0
         self.state = 'Idle'
         self.start_time = get_time()
@@ -29,22 +30,26 @@ class Shuttlecock_Practice:
         self.image.clip_draw(0, 0, 7, 8, self.x, self.y, 28, 32)
         draw_rectangle(*self.get_bb())
 
-    def update(self):
 
+    def update(self):
         if get_time() - self.start_time > 0.05:  # 3초마다
             self.start_time = get_time()
-            self.speed_y = RUN_SPEED_PPS  # 초기 속도 설정
+            self.speed_y = 0
+            self.is_flying = True
+        if self.is_flying:
+            self.time += 0.1
+            self.x += RUN_SPEED_PPS * game_framework.frame_time * -1
+            self.y += self.speed_y * game_framework.frame_time
+            if get_time() - self.start_time > 0.5:
+                self.start_time = get_time()
+                self.speed_y -= RUN_SPEED_PPS
+            # Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
+            self.y = max(self.y, 100)
+            # Shuttlecock이 땅에 닿았는지 확인
+            if self.y == 100:
+                self.is_flying = False
+                self.time = 0
 
-
-        self.time += 0.1
-        self.x -= RUN_SPEED_PPS * game_framework.frame_time  # 왼쪽으로 이동
-        self.y += self.speed_y * game_framework.frame_time
-
-        # Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
-        self.y = max(self.y, 100)
-        # Shuttlecock이 땅에 닿았는지 확인
-        if self.y == 100:
-            self.time = 0
 
     def get_bb(self):
         return self.x - 14, self.y - 16, self.x + 14, self.y + 16

@@ -212,7 +212,7 @@ class Player:
         self.state = 'Idle'
         # Shuttlecock 객체 생성
         self.shuttlecock_practice = Shuttlecock_Practice()
-        # 라켓의 충돌 체크 박스 (self.x로 값 설정 못함??)
+        # 라켓의 충돌 체크 박스
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
         # 화살표 박스 그리기 변수
         # self.select_press = 0
