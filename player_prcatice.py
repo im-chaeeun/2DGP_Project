@@ -214,8 +214,11 @@ class Player:
         self.shuttlecock_practice = Shuttlecock_Practice()
         # 라켓의 충돌 체크 박스
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
-        # 화살표 박스 그리기 변수
-        # self.select_press = 0
+        # 화살표 그리기 - 따로 클래스 만들면 안 돼서 player에서 그림
+        self.image_left = load_image('resource/arrow_left.png')
+        self.image_left_press = load_image('resource/arrow_left_press.png')
+        self.image_right = load_image('resource/arrow_right.png')
+        self.image_right_press = load_image('resource/arrow_right_press.png')
 
 
     def update(self):
@@ -225,6 +228,9 @@ class Player:
 
         # Shuttlecock 움직임 업데이트
         self.shuttlecock_practice.update()
+
+        # 화살표 그리기
+        self.draw_arrow_box()
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -240,6 +246,8 @@ class Player:
         draw_rectangle(*self.get_bb())
         # Stamina 바 그리기
         #self.stamina.draw()
+        # 화살표 박스 그리기
+        self.draw_arrow_box()
 
 
     def get_bb(self):
@@ -254,15 +262,15 @@ class Player:
             print('리시브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
 
-    def check_press_arrow(self):
-        if self.state_machine.cur_state == Idle:
-            return 0
-        elif self.state_machine.cur_state == Walk:
-            return 1
-    # elif self.state_machine.cur_state == Serve:
-    #     print('서브 겟비비')
-    #     return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
-    # elif self.state_machine.cur_state == Recieve:
-    #     print('리시브 겟비비')
-    #     return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
+    def draw_arrow_box(self):
+        self.image_left.draw(40, 28)
+        self.image_right.draw(130, 28)
+        if self.state_machine.cur_state == Walk:
+            if self.dir == - 1:
+                self.image_left_press.draw(40, 28)
+            elif self.dir == 1:
+                self.image_right_press.draw(130, 28)
+
+
+
 
