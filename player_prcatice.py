@@ -219,6 +219,10 @@ class Player:
         self.image_left_press = load_image('resource/arrow_left_press.png')
         self.image_right = load_image('resource/arrow_right.png')
         self.image_right_press = load_image('resource/arrow_right_press.png')
+        self.image_serve = load_image('resource/arrow_serve.png')
+        self.image_serve_press = load_image('resource/arrow_serve_press.png')
+        self.image_recieve = load_image('resource/arrow_recieve.png')
+        self.image_recieve_press = load_image('resource/arrow_recieve_press.png')
 
 
     def update(self):
@@ -265,11 +269,18 @@ class Player:
     def draw_arrow_box(self):
         self.image_left.draw(40, 28)
         self.image_right.draw(130, 28)
+        #self.image_serve.draw(220, 28)
+        #self.image_recieve.draw(310, 28)
         if self.state_machine.cur_state == Walk:
             if self.dir == - 1:
                 self.image_left_press.draw(40, 28)
             elif self.dir == 1:
                 self.image_right_press.draw(130, 28)
+        #lif self.state_machine.cur_state == Serve:
+        #   self.image_serve_press.draw(220, 28)
+        #elif self.state_machine.cur_state == Recieve:
+        #    self.image_recieve_press.draw(310, 28)
+
 
 
 
