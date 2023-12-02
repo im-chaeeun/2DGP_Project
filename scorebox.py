@@ -14,8 +14,8 @@ class Scorebox:
         player2_instance = Player2()
 
         self.image.draw(400, 570)
-        self.font.draw(333, 575,   f'{player1_instance.score}', (255, 255, 0))
-        self.font.draw(441, 575, f'{player2_instance.score}', (255, 255, 0))
+        self.font.draw(333, 575,   f'{player1_instance.score}', (255, 255, 255))
+        self.font.draw(441, 575, f'{player2_instance.score}', (255, 255, 255))
 
     def update(self):
         pass

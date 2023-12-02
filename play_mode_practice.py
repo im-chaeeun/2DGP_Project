@@ -6,7 +6,6 @@ from player_prcatice import Player
 from court import Court
 from practice_machine import Practice_Machine
 from shuttlecock_practice import Shuttlecock_Practice
-from arrow_practice_mode import Arrow
 #from stamina_bar import Stamina
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm

@@ -9,6 +9,6 @@ import title_mode
 #import logo_mode as start_mode
 
 open_canvas()
-game_framework.run(play_mode_practice)
+game_framework.run(play_mode_competition)
 
 close_canvas()

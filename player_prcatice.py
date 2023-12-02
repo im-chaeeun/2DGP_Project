@@ -1,7 +1,5 @@
-import arrow_practice_mode
 import play_mode_practice
 from shuttlecock_practice import Shuttlecock_Practice
-from arrow_practice_mode import Arrow
 # from stamina_bar import Stamina
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
@@ -16,7 +14,7 @@ FRAMES_PER_ACTION = 5
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
 import game_framework
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp, draw_rectangle
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp, draw_rectangle, get_time
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 
 def right_down(e):
@@ -200,6 +198,7 @@ class StateMachine:
     def draw(self):
         self.cur_state.draw(self.player)
 
+
 class Player:
     def __init__(self):
         self.x, self.y = 200, 200
@@ -223,18 +222,24 @@ class Player:
         self.image_serve_press = load_image('resource/arrow_serve_press.png')
         self.image_recieve = load_image('resource/arrow_recieve.png')
         self.image_recieve_press = load_image('resource/arrow_recieve_press.png')
-
+        #스테미나
+        self.stamina_percent, self.stamina_start_time, self.staminabox_x, self.staminabox_y = 100, 0, 10, 700
 
     def update(self):
         self.state_machine.update()
         # 플레이어의 x 좌표 범위 제한
         self.x = clamp(100 - 10, self.x, 400 - 50)
-
         # Shuttlecock 움직임 업데이트
         self.shuttlecock_practice.update()
-
         # 화살표 그리기
         self.draw_arrow_box()
+        # 스테미나 채우기
+        self.stamina_percent = clamp(0, self.stamina_percent, 100)
+        print(self.stamina_percent)
+        if get_time() - self.stamina_start_time > 0.2:
+            self.stamina_percent += 0.02
+            self.stamina_start_time = get_time()
+
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -248,11 +253,10 @@ class Player:
         self.shuttlecock_practice.draw()
         # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
-        # Stamina 바 그리기
-        #self.stamina.draw()
         # 화살표 박스 그리기
         self.draw_arrow_box()
-
+        # 스테미나 바 그리기
+        self.draw_stamina_bar()
 
     def get_bb(self):
         if self.state_machine.cur_state == Idle:
@@ -280,6 +284,11 @@ class Player:
         #   self.image_serve_press.draw(220, 28)
         #elif self.state_machine.cur_state == Recieve:
         #    self.image_recieve_press.draw(310, 28)
+
+    def draw_stamina_bar(self):
+        draw_rectangle(10, 50, 200, 70)
+
+
 
 
 
