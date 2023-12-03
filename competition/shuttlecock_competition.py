@@ -17,9 +17,9 @@ class Shuttlecock:
     image = None
 
     def __init__(self):
-        if Shuttlecock.image is None:
-            Shuttlecock.image = load_image('resource/shuttlecock.png')
-        self.x, self.y, self.velocity = 260, 265, 2
+        self.image = load_image('resource/shuttlecock.png')
+        self.x, self.y = 260, 265
+
         self.time = 0
         self.is_flying = False
         self.state = 'Idle'
@@ -27,7 +27,7 @@ class Shuttlecock:
         self.speed_y = 0
         self.dir = 0
         self.who_hit_shuttlecock = None
-        self.who_get_score = None
+        self.who_get_score = 'player1'
         self.player1_score, self.player2_score = 0, 0
 
     def draw(self):
@@ -42,14 +42,16 @@ class Shuttlecock:
             if get_time() - self.start_time > 0.6:
                 self.start_time = get_time()
                 self.speed_y -= RUN_SPEED_PPS
-            # Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
+
+            #Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
             self.y = max(self.y, 100)
             # Shuttlecock이 땅에 닿았는지 확인
             if self.y == 100:
                 self.is_flying = False
                 self.time = 0
+                # self.check_who_get_score()
 
-                self.check_who_get_score()
+
 
     def get_bb(self):
         return self.x - 14, self.y - 16, self.x + 14, self.y + 16
@@ -61,23 +63,22 @@ class Shuttlecock:
     def handle_collision(self, group, other):
         pass
 
-    def check_who_get_score(self):
-
-        if self.who_hit_shuttlecock == 'player1':
-            if self.x > 700 or self.x < 400:
-                self.who_get_score = 'player2'
-                print('플레이어2 승')
-                self.player2_score += 1
-            else:
-                self.who_get_score = 'player1'
-                print('플레이어1 승')
-                self.player1_score += 1
-        elif self.who_hit_shuttlecock == 'player2':
-            if self.x < 100 or self.x > 400:
-                self.who_get_score = 'player1'
-                print('플레이어1 승')
-                self.player1_score += 1
-            else:
-                self.who_get_score = 'player2'
-                print('플레이어2 승')
-                self.player2_score += 1
+    # def check_who_get_score(self):
+    #     if self.who_hit_shuttlecock == 'player1':
+    #         if self.x > 700 or self.x < 400:
+    #             self.who_get_score = 'player2'
+    #             print('플레이어2 승')
+    #             self.player2_score += 1
+    #         else:
+    #             self.who_get_score = 'player1'
+    #             print('플레이어1 승')
+    #             self.player1_score += 1
+    #     elif self.who_hit_shuttlecock == 'player2':
+    #         if self.x < 100 or self.x > 400:
+    #             self.who_get_score = 'player1'
+    #             print('플레이어1 승')
+    #             self.player1_score += 1
+    #         else:
+    #             self.who_get_score = 'player2'
+    #             print('플레이어2 승')
+    #             self.player2_score += 1

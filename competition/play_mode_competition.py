@@ -88,7 +88,7 @@ def finish():
 
 def update():
     game_world.update()
-
+    shuttlecock.y = max(shuttlecock.y, 100)
     if game_world.collide(shuttlecock, player1):
         print('플레이어1 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
