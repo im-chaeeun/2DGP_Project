@@ -19,7 +19,7 @@ class Shuttlecock:
 
     def __init__(self):
         if Shuttlecock.image is None:
-            Shuttlecock.image = load_image('shuttlecock.png')
+            Shuttlecock.image = load_image('resource/shuttlecock.png')
         self.x, self.y, self.velocity = 260, 265, 2
         self.time = 0
         self.is_flying = False

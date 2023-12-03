@@ -5,7 +5,7 @@ SCREEN_HEIGHT = 600
 
 class Court:
     def __init__(self):
-        self.image = load_image('badminton_court_background.png')
+        self.image = load_image('resource/badminton_court_background.png')
 
     def draw(self):
         self.image.draw(SCREEN_WIDTH // 2, SCREEN_HEIGHT//2)

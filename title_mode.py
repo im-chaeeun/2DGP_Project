@@ -8,7 +8,7 @@ import play_mode_practice
 
 def init():
     global image
-    image = load_image('title_screen.png')
+    image = load_image('resource/title_screen.png')
     pass
 
 def finish():

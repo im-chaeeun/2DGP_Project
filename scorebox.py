@@ -6,8 +6,8 @@ from player2_competition import Player2
 
 class Scorebox:
     def __init__(self):
-        self.image = load_image('scorebox.png')
-        self.font = load_font('ENCR10B.TTF', 40)
+        self.image = load_image('resource/scorebox.png')
+        self.font = load_font('resource/ENCR10B.TTF', 40)
 
     def draw(self):
         player1_instance = Player1()

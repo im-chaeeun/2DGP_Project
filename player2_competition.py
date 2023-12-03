@@ -186,7 +186,7 @@ class Player2:
     def __init__(self):
         self.x, self.y = 600, 200
         self.frame = 0
-        self.image = load_image('character.png')
+        self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
         self.score = 0  # 점수 추가
         self.state_machine = StateMachine(self)

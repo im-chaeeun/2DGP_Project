@@ -11,7 +11,7 @@ def init():
     global logo_start_time
 
     running = True
-    image = load_image('tuk_credit.png')
+    image = load_image('resource/tuk_credit.png')
     logo_start_time = get_time()
     pass
 
