@@ -1,8 +1,5 @@
 from pico2d import *
-import math
 import game_framework
-import game_world
-import player1_competition
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 20.0   # 20km/h

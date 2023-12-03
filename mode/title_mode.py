@@ -1,9 +1,8 @@
-from pico2d import load_image, clear_canvas, update_canvas, get_events, SDL_KEYDOWN,  SDLK_ESCAPE, SDLK_SPACE
+from pico2d import load_image, clear_canvas, update_canvas, get_events, SDL_KEYDOWN,  SDLK_ESCAPE
 from sdl2 import SDLK_2, SDLK_1
 
 import game_framework
-import logo_mode
-import play_mode_practice
+from mode import logo_mode
 
 
 def init():

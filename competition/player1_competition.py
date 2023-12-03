@@ -1,4 +1,4 @@
-from shuttlecock_competition import Shuttlecock
+from competition.shuttlecock_competition import Shuttlecock
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 25.0   # 20km/h
@@ -12,7 +12,7 @@ FRAMES_PER_ACTION = 5
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
 import game_framework
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp, draw_rectangle
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp, draw_rectangle, get_time
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
 
 def right_down(e):
@@ -117,6 +117,7 @@ class Serve:
         player1.racket_y2 += 13
         delay(0.1)
         # print("Serve state")  # 디버깅용 출력
+        player1.stamina_percent -= 30
 
 
     @staticmethod
@@ -212,16 +213,22 @@ class Player1:
         self.shuttlecock = Shuttlecock()
         # 라켓의 충돌 체크 박스 (self.x로 값 설정 못함??)
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
-
+        # 스테미나
+        self.stamina_percent, self.stamina_start_time = 640, 0
+        self.stamina_image = load_image('resource/stamina.png')
 
     def update(self):
         self.state_machine.update()
         # 플레이어의 x 좌표 범위 제한
         self.x = clamp(100 - 10, self.x, 400 - 50)
-
         # Shuttlecock 움직임 업데이트
         self.shuttlecock.update()
-
+        # 스테미나 채우기
+        self.stamina_percent = clamp(0, self.stamina_percent, 640)
+        print(self.stamina_percent)
+        if get_time() - self.stamina_start_time > 0.2:
+            self.stamina_percent += 10
+            self.stamina_start_time = get_time()
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
         # Shuttlecock 이벤트 처리
@@ -233,6 +240,9 @@ class Player1:
         self.shuttlecock.draw()
         # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
+        # stamina
+        self.draw_stamina()
+
 
 
     def get_bb(self):
@@ -246,3 +256,6 @@ class Player1:
         elif self.state_machine.cur_state == Recieve:
             print('리시브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
+
+    def draw_stamina(self):
+        self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)
