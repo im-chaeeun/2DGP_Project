@@ -13,7 +13,7 @@ FRAMES_PER_ACTION = 5
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
 
-from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp
+from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp, get_time, draw_rectangle
 from sdl2 import SDLK_RIGHT, SDLK_LEFT, SDLK_DOWN, SDLK_UP
 
 
@@ -98,7 +98,11 @@ class Serve:
             player1.action = 1
         player1.dir = 0
         player1.frame = 0
-        pass
+
+        # get_bb를 위한 라켓값을 enter할 때 받아서 do에서 수정하도록!
+        player1.racket_x1, player1.racket_y1 = player1.x - 75, player1.y - 20
+        player1.racket_x2, player1.racket_y2 = player1.x - 45, player1.y + 10
+
 
     @staticmethod
     def exit(player2, e):
@@ -107,14 +111,18 @@ class Serve:
     @staticmethod
     def do(player2):
         player2.frame = (player2.frame + 1) % 5
+        player2.racket_x1 -= 3
+        player2.racket_x2 -= 3
+        player2.racket_y1 += 13
+        player2.racket_y2 += 13
         delay(0.1)
-
-        pass
+        # print("Serve state")  # 디버깅용 출력
+        player2.stamina_percent -= 30
 
     @staticmethod
     def draw(player2):
         player2.image.clip_composite_draw(player2.frame * 50, player2.action * 50, 50, 50, 0, 'h', player2.x, player2.y, 250, 250)
-        pass
+
 
 
 class Recieve:
@@ -126,7 +134,10 @@ class Recieve:
             player2.action = 0
         player2.dir = 0
         player2.frame = 0
-        pass
+
+        # do에서 수정할 수 있도록 라켓의 위치를 받아옴
+        player2.racket_x1, player2.racket_y1 = player2.x - 120, player2.y + 65
+        player2.racket_x2, player2.racket_y2 = player2.x - 90, player2.y + 95
 
     @staticmethod
     def exit(player2, e):
@@ -134,8 +145,12 @@ class Recieve:
 
     @staticmethod
     def do(player2):
-        delay(0.1)
         player2.frame = (player2.frame + 1) % 5
+        player2.racket_x1 += 20
+        player2.racket_x2 += 20
+        player2.racket_y1 -= 3
+        player2.racket_y2 -= 3
+        delay(0.1)
 
     @staticmethod
     def draw(player2):
@@ -193,18 +208,28 @@ class Player2:
         self.state_machine.start()
         # Shuttlecock 객체 생성
         self.shuttlecock = Shuttlecock()
+        # 라켓의 충돌 체크 박스 
+        self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
+        # 스테미나
+        self.stamina_percent, self.stamina_start_time = 640, 0
+        self.stamina_image = load_image('resource/stamina.png')
+
     def update(self):
         self.state_machine.update()
 
         # x 좌표 범위 제한
         self.x = clamp(400 + 50, self.x, 700 - 10)
-
         # Shuttlecock 업데이트
         self.shuttlecock.update()
+        # 스테미나 채우기
+        self.stamina_percent = clamp(0, self.stamina_percent, 640)
+        print(self.stamina_percent)
+        if get_time() - self.stamina_start_time > 0.2:
+            self.stamina_percent += 10
+            self.stamina_start_time = get_time()
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
-
         # Shuttlecock 이벤트 처리
         self.shuttlecock.handle_event(event)
 
@@ -213,3 +238,22 @@ class Player2:
 
         # Shuttlecock 그리기
         self.shuttlecock.draw()
+        # 충돌 체크 박스
+        draw_rectangle(*self.get_bb())
+        # stamina
+        self.draw_stamina()
+
+    def get_bb(self):
+        if self.state_machine.cur_state == Idle:
+            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+        elif self.state_machine.cur_state == Walk:
+            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+        elif self.state_machine.cur_state == Serve:
+            print('서브 겟비비')
+            return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
+        elif self.state_machine.cur_state == Recieve:
+            print('리시브 겟비비')
+            return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
+
+    def draw_stamina(self):
+        self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)

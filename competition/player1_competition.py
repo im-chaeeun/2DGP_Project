@@ -126,6 +126,12 @@ class Serve:
         pass
 
 
+    @staticmethod
+    def draw(player1):
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        pass
+
+
 class Recieve:
     @staticmethod
     def enter(player1, e):
@@ -201,7 +207,7 @@ class StateMachine:
 class Player1:
     def __init__(self):
         self.x, self.y = 200, 200
-        self.frame = 0
+        self.frame, self.frame_num = 0, 0
         self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
         self.score = 0  # 점수 추가
