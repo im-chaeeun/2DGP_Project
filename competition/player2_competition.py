@@ -136,8 +136,8 @@ class Recieve:
         player2.frame = 0
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
-        player2.racket_x1, player2.racket_y1 = player2.x - 120, player2.y + 65
-        player2.racket_x2, player2.racket_y2 = player2.x - 90, player2.y + 95
+        player2.racket_x1, player2.racket_y1 = player2.x + 70, player2.y + 65
+        player2.racket_x2, player2.racket_y2 = player2.x + 100, player2.y + 95
 
     @staticmethod
     def exit(player2, e):
@@ -146,11 +146,12 @@ class Recieve:
     @staticmethod
     def do(player2):
         player2.frame = (player2.frame + 1) % 5
-        player2.racket_x1 += 20
-        player2.racket_x2 += 20
+        player2.racket_x1 -= 20
+        player2.racket_x2 -= 20
         player2.racket_y1 -= 3
         player2.racket_y2 -= 3
         delay(0.1)
+        player2.stamina_percent -= 30
 
     @staticmethod
     def draw(player2):
@@ -193,6 +194,12 @@ class StateMachine:
                 self.cur_state = Idle
                 self.cur_state.enter(self.player2, ('NONE', 0))
 
+        if self.player2.stamina_percent < 30:
+            self.cur_state.exit(self.player2, ('NONE', 0))
+            self.cur_state = Idle
+            self.cur_state.enter(self.player2, ('NONE', 0))
+
+
     def draw(self):
         self.cur_state.draw(self.player2)
 
@@ -203,15 +210,29 @@ class Player2:
         self.frame = 0
         self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
-        self.score = 0  # 점수 추가
+        self.score, self.setscore = 0, 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.player_turn = False
+
         # Shuttlecock 객체 생성
         self.shuttlecock = Shuttlecock()
-        # 라켓의 충돌 체크 박스 
+
+        # 라켓의 충돌 체크 박스
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
+
+        # 화살표 그리기 - 따로 클래스 만들면 안 돼서 player에서 그림
+        self.image_left = load_image('resource/arrow_left.png')
+        self.image_left_press = load_image('resource/arrow_left_press.png')
+        self.image_right = load_image('resource/arrow_right.png')
+        self.image_right_press = load_image('resource/arrow_right_press.png')
+        self.image_serve = load_image('resource/arrow_serve.png')
+        self.image_serve_press = load_image('resource/arrow_serve_press.png')
+        self.image_recieve = load_image('resource/arrow_recieve.png')
+        self.image_recieve_press = load_image('resource/arrow_recieve_press.png')
+
         # 스테미나
-        self.stamina_percent, self.stamina_start_time = 640, 0
+        self.stamina_percent, self.stamina_start_time = 500, 0
         self.stamina_image = load_image('resource/stamina.png')
 
     def update(self):
@@ -235,19 +256,20 @@ class Player2:
 
     def draw(self):
         self.state_machine.draw()
-
         # Shuttlecock 그리기
         self.shuttlecock.draw()
         # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
+        # 화살표 박스 그리기
+        self.draw_arrow_box()
         # stamina
         self.draw_stamina()
 
     def get_bb(self):
         if self.state_machine.cur_state == Idle:
-            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+            return self.x - 40, self.y + 10, self.x - 70, self.y + 40
         elif self.state_machine.cur_state == Walk:
-            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+            return self.x - 40, self.y + 10, self.x - 70, self.y + 40
         elif self.state_machine.cur_state == Serve:
             print('서브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
@@ -255,5 +277,20 @@ class Player2:
             print('리시브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
 
+    def draw_arrow_box(self):
+        self.image_left.draw(670, 28)
+        self.image_right.draw(760, 28)
+        self.image_serve.draw(580, 28)
+        self.image_recieve.draw(490, 28)
+        if self.state_machine.cur_state == Walk:
+            if self.dir == - 1:
+                self.image_left_press.draw(670, 28)
+            elif self.dir == 1:
+                self.image_right_press.draw(760, 28)
+        elif self.state_machine.cur_state == Serve:
+          self.image_serve_press.draw(580, 28)
+        elif self.state_machine.cur_state == Recieve:
+           self.image_recieve_press.draw(490, 28)
+
     def draw_stamina(self):
-        self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)
+        self.stamina_image.clip_draw(0, 0, 333, 10, 797, 590, self.stamina_percent, 10)

@@ -159,6 +159,7 @@ class Recieve:
         player1.racket_y1 -= 3
         player1.racket_y2 -= 3
         delay(0.1)
+        player1.stamina_percent -= 30
 
     @staticmethod
     def draw(player1):
@@ -200,6 +201,10 @@ class StateMachine:
                 self.cur_state = Idle
                 self.cur_state.enter(self.player1, ('NONE', 0))
 
+        if self.player1.stamina_percent < 30:
+            self.cur_state.exit(self.player1, ('NONE', 0))
+            self.cur_state = Idle
+            self.cur_state.enter(self.player1, ('NONE', 0))
 
     def draw(self):
         self.cur_state.draw(self.player1)
@@ -210,15 +215,30 @@ class Player1:
         self.frame, self.frame_num = 0, 0
         self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
-        self.score = 0  # 점수 추가
+        self.score, self.set_score = 0, 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.player_turn = True
+
         # state 추가
         self.state = 'Idle'
+
         # Shuttlecock 객체 생성
         self.shuttlecock = Shuttlecock()
+
         # 라켓의 충돌 체크 박스 (self.x로 값 설정 못함??)
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
+
+        # 화살표 그리기 - 따로 클래스 만들면 안 돼서 player에서 그림
+        self.image_left = load_image('resource/arrow_left.png')
+        self.image_left_press = load_image('resource/arrow_left_press.png')
+        self.image_right = load_image('resource/arrow_right.png')
+        self.image_right_press = load_image('resource/arrow_right_press.png')
+        self.image_serve = load_image('resource/arrow_serve.png')
+        self.image_serve_press = load_image('resource/arrow_serve_press.png')
+        self.image_recieve = load_image('resource/arrow_recieve.png')
+        self.image_recieve_press = load_image('resource/arrow_recieve_press.png')
+
         # 스테미나
         self.stamina_percent, self.stamina_start_time = 640, 0
         self.stamina_image = load_image('resource/stamina.png')
@@ -246,6 +266,8 @@ class Player1:
         self.shuttlecock.draw()
         # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
+        # 화살표 박스 그리기
+        self.draw_arrow_box()
         # stamina
         self.draw_stamina()
 
@@ -262,6 +284,21 @@ class Player1:
         elif self.state_machine.cur_state == Recieve:
             print('리시브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
+
+    def draw_arrow_box(self):
+        self.image_left.draw(40, 28)
+        self.image_right.draw(130, 28)
+        self.image_serve.draw(220, 28)
+        self.image_recieve.draw(310, 28)
+        if self.state_machine.cur_state == Walk:
+            if self.dir == - 1:
+                self.image_left_press.draw(40, 28)
+            elif self.dir == 1:
+                self.image_right_press.draw(130, 28)
+        elif self.state_machine.cur_state == Serve:
+          self.image_serve_press.draw(220, 28)
+        elif self.state_machine.cur_state == Recieve:
+           self.image_recieve_press.draw(310, 28)
 
     def draw_stamina(self):
         self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)

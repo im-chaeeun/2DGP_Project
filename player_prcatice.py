@@ -231,8 +231,8 @@ class Player:
         self.x = clamp(100 - 10, self.x, 400 - 50)
         # Shuttlecock 움직임 업데이트
         self.shuttlecock_practice.update()
-        # 화살표 그리기
-        self.draw_arrow_box()
+        # # 화살표 그리기
+        # self.draw_arrow_box()
         # 스테미나 채우기
         self.stamina_percent = clamp(0, self.stamina_percent, 100)
         print(self.stamina_percent)

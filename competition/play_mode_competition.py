@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 
 import game_world
+from competition.net import Net
 from competition.player1_competition import Player1
 from competition.player2_competition import Player2
 from court import Court
@@ -49,6 +50,8 @@ def init():
     scorebox = Scorebox()
     game_world.add_object(scorebox, 3)
 
+    net = Net()
+    game_world.add_object(net, 1)
 
 def finish():
     game_world.clear()
