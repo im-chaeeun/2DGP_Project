@@ -211,12 +211,13 @@ class StateMachine:
         self.cur_state.draw(self.player1)
 
 class Player1:
+
     def __init__(self):
         self.x, self.y = 200, 200
         self.frame, self.frame_num = 0, 0
         self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
-        self.score, self.set_score = 0, 0  # 점수 추가
+        self.score, self.setscore = 0, 0  # 점수 추가
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.player_turn = True
@@ -256,6 +257,8 @@ class Player1:
         if get_time() - self.stamina_start_time > 0.2:
             self.stamina_percent += 10
             self.stamina_start_time = get_time()
+
+
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
         # Shuttlecock 이벤트 처리
@@ -305,13 +308,14 @@ class Player1:
         self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)
 
     def handle_collision(self, group, other):
-        if group == 'player:ball':
-            if self.state_machine.cur_state == Recieve:
-                Shuttlecock.start_time = get_time()
-                Shuttlecock.speed_x = RECEIVE_SPEED_PPS
-                Shuttlecock.speed_y = RECEIVE_SPEED_PPS//2
-            elif self.state_machine.cur_state == Serve:
-                print('서브 상태 충돌!!!')
-                Shuttlecock.start_time = get_time()
-                Shuttlecock.speed_x = SERVE_SPEED_PPS
-                Shuttlecock.speed_y = SERVE_SPEED_PPS//2
+        # if group == 'player:ball':
+        #     if self.state_machine.cur_state == Recieve:
+        #         Shuttlecock.start_time = get_time()
+        #         Shuttlecock.speed_x = RECEIVE_SPEED_PPS
+        #         Shuttlecock.speed_y = RECEIVE_SPEED_PPS//2
+        #     elif self.state_machine.cur_state == Serve:
+        #         print('서브 상태 충돌!!!')
+        #         Shuttlecock.start_time = get_time()
+        #         Shuttlecock.speed_x = SERVE_SPEED_PPS
+        #         Shuttlecock.speed_y = SERVE_SPEED_PPS//2
+        pass

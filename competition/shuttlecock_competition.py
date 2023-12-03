@@ -26,6 +26,9 @@ class Shuttlecock:
         self.start_time = get_time()
         self.speed_y = 0
         self.dir = 0
+        self.who_hit_shuttlecock = None
+        self.who_get_score = None
+        self.player1_score, self.player2_score = 0, 0
 
     def draw(self):
         self.image.clip_draw(0, 0, 7, 8, self.x, self.y, 28, 32)
@@ -46,6 +49,8 @@ class Shuttlecock:
                 self.is_flying = False
                 self.time = 0
 
+                self.check_who_get_score()
+
     def get_bb(self):
         return self.x - 14, self.y - 16, self.x + 14, self.y + 16
 
@@ -54,12 +59,25 @@ class Shuttlecock:
         pass
 
     def handle_collision(self, group, other):
-        def handle_collision(self, group, other):
-            # if group == 'player1:shuttlecock':
-            #     print('셔틀콕 - 플레이어1:셔틀콕 충돌')
-            #     self.dir = 1  # player1과 충돌했을 때 오른쪽으로 설정
-            # elif group == 'player2:shuttlecock':
-            #     self.dir = -1  # player2과 충돌했을 때 왼쪽으로 설정
-            # elif group == 'net:shuttlecock':
-            #     self.dir *= -1  # 넷과 충돌했을 때 방향을 반전
-            pass
+        pass
+
+    def check_who_get_score(self):
+
+        if self.who_hit_shuttlecock == 'player1':
+            if self.x > 700 or self.x < 400:
+                self.who_get_score = 'player2'
+                print('플레이어2 승')
+                self.player2_score += 1
+            else:
+                self.who_get_score = 'player1'
+                print('플레이어1 승')
+                self.player1_score += 1
+        elif self.who_hit_shuttlecock == 'player2':
+            if self.x < 100 or self.x > 400:
+                self.who_get_score = 'player1'
+                print('플레이어1 승')
+                self.player1_score += 1
+            else:
+                self.who_get_score = 'player2'
+                print('플레이어2 승')
+                self.player2_score += 1

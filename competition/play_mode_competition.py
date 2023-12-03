@@ -16,23 +16,19 @@ RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0  # 분당 몇 m?
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
-RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0  # 분당 몇 m?
-RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
-RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
-
-# 리시브
+# 리시브할 때 셔틀콕
 RECEIVE_SPEED_KMPH = 25.0 # Km / Hour
 RECEIVE_SPEED_MPM = (RECEIVE_SPEED_KMPH * 1000.0 / 60.0)
 RECEIVE_SPEED_MPS = (RECEIVE_SPEED_MPM / 60.0)
 RECEIVE_SPEED_PPS = (RECEIVE_SPEED_MPS * PIXEL_PER_METER)
 
-# 서브
+# 서브할 때 셔틀콕
 SERVE_SPEED_KMPH = 25.0 # Km / Hour
 SERVE_SPEED_MPM = (SERVE_SPEED_KMPH * 1000.0 / 60.0)
 SERVE_SPEED_MPS = (SERVE_SPEED_MPM / 60.0)
 SERVE_SPEED_PPS = (SERVE_SPEED_MPS * PIXEL_PER_METER)
 
-# 네트와 충돌
+# 네트와 충돌할 때 셔틀콕
 NET_SPEED_KMPH = 5.0 # Km / Hour
 NET_SPEED_MPM = (NET_SPEED_KMPH * 1000.0 / 60.0)
 NET_SPEED_MPS = (NET_SPEED_MPM / 60.0)
@@ -57,6 +53,7 @@ def init():
     global scorebox
     global shuttlecock
     global net
+    global font
 
     running = True
 
@@ -79,6 +76,7 @@ def init():
 
     scorebox = Scorebox()
     game_world.add_object(scorebox, 3)
+    font = load_font('resource/ENCR10B.TTF', 40)
 
     net = Net()
     game_world.add_object(net, 1)
@@ -94,6 +92,7 @@ def update():
     if game_world.collide(shuttlecock, player1):
         print('플레이어1 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
+        shuttlecock.who_hit_shuttlecock = 'player1'
         shuttlecock.speed_y = RECEIVE_SPEED_PPS
         shuttlecock.dir = 1
         shuttlecock.update()
@@ -101,6 +100,7 @@ def update():
     if game_world.collide(shuttlecock, player2):
         print('플레이어2 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
+        shuttlecock.who_hit_shuttlecock = 'player2'
         shuttlecock.speed_y = RECEIVE_SPEED_PPS
         shuttlecock.dir = -1
         shuttlecock.update()

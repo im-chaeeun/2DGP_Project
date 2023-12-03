@@ -216,6 +216,7 @@ class StateMachine:
 
 
 class Player2:
+
     def __init__(self):
         self.x, self.y = 600, 200
         self.frame = 0
@@ -225,13 +226,10 @@ class Player2:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.player_turn = False
-
         # Shuttlecock 객체 생성
         self.shuttlecock = Shuttlecock()
-
         # 라켓의 충돌 체크 박스
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
-
         # 화살표 그리기 - 따로 클래스 만들면 안 돼서 player에서 그림
         self.image_left = load_image('resource/arrow_left.png')
         self.image_left_press = load_image('resource/arrow_left_press.png')
@@ -259,6 +257,7 @@ class Player2:
         if get_time() - self.stamina_start_time > 0.2:
             self.stamina_percent += 10
             self.stamina_start_time = get_time()
+
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -308,13 +307,3 @@ class Player2:
 
     def handle_collision(self, group, other):
         pass
-        # if group == 'player:ball':
-        #     if self.state_machine.cur_state == Recieve:
-        #         Shuttlecock.start_time = get_time()
-        #         Shuttlecock.speed_x = RECEIVE_SPEED_PPS
-        #         Shuttlecock.speed_y = RECEIVE_SPEED_PPS//2
-        #     elif self.state_machine.cur_state == Serve:
-        #         print('서브 상태 충돌!!!')
-        #         Shuttlecock.start_time = get_time()
-        #         Shuttlecock.speed_x = SERVE_SPEED_PPS
-        #         Shuttlecock.speed_y = SERVE_SPEED_PPS//2
