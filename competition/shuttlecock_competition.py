@@ -23,6 +23,7 @@ class Shuttlecock:
         self.state = 'Idle'
         self.start_time = get_time()
         self.speed_y = 0
+        self.dir = 0
 
     def draw(self):
         self.image.clip_draw(0, 0, 7, 8, self.x, self.y, 28, 32)
@@ -31,9 +32,9 @@ class Shuttlecock:
     def update(self):
         if self.is_flying:
             self.time += 0.1
-            self.x += RUN_SPEED_PPS * game_framework.frame_time # 방향 나중에 곱해라
+            self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time  # 방향 나중에 곱해라
             self.y += self.speed_y * game_framework.frame_time
-            if get_time() - self.start_time > 0.5:
+            if get_time() - self.start_time > 0.6:
                 self.start_time = get_time()
                 self.speed_y -= RUN_SPEED_PPS
             # Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
@@ -49,3 +50,14 @@ class Shuttlecock:
     def handle_event(self, event):
         # Shuttlecock 이벤트 처리 추가
         pass
+
+    def handle_collision(self, group, other):
+        def handle_collision(self, group, other):
+            # if group == 'player1:shuttlecock':
+            #     print('셔틀콕 - 플레이어1:셔틀콕 충돌')
+            #     self.dir = 1  # player1과 충돌했을 때 오른쪽으로 설정
+            # elif group == 'player2:shuttlecock':
+            #     self.dir = -1  # player2과 충돌했을 때 왼쪽으로 설정
+            # elif group == 'net:shuttlecock':
+            #     self.dir *= -1  # 넷과 충돌했을 때 방향을 반전
+            pass

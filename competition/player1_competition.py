@@ -11,6 +11,18 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 5
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
+# 리시브
+RECEIVE_SPEED_KMPH = 15.0 # Km / Hour
+RECEIVE_SPEED_MPM = (RECEIVE_SPEED_KMPH * 1000.0 / 60.0)
+RECEIVE_SPEED_MPS = (RECEIVE_SPEED_MPM / 60.0)
+RECEIVE_SPEED_PPS = (RECEIVE_SPEED_MPS * PIXEL_PER_METER)
+
+# 서브
+SERVE_SPEED_KMPH = 10.0 # Km / Hour
+SERVE_SPEED_MPM = (SERVE_SPEED_KMPH * 1000.0 / 60.0)
+SERVE_SPEED_MPS = (SERVE_SPEED_MPM / 60.0)
+SERVE_SPEED_PPS = (SERVE_SPEED_MPS * PIXEL_PER_METER)
+
 import game_framework
 from pico2d import load_image, SDL_KEYDOWN, SDL_KEYUP, delay, clamp, draw_rectangle, get_time
 from sdl2 import SDLK_d, SDLK_a, SDLK_s, SDLK_w
@@ -115,7 +127,7 @@ class Serve:
         player1.racket_x2 += 3
         player1.racket_y1 += 13
         player1.racket_y2 += 13
-        delay(0.1)
+        delay(0.05)
         # print("Serve state")  # 디버깅용 출력
         player1.stamina_percent -= 30
 
@@ -144,7 +156,7 @@ class Recieve:
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
         player1.racket_x1, player1.racket_y1 = player1.x - 120, player1.y + 65
-        player1.racket_x2, player1.racket_y2 = player1.x - 90, player1.y + 95
+        player1.racket_x2, player1.racket_y2 = player1.x - 100, player1.y + 95
         pass
 
     @staticmethod
@@ -158,7 +170,7 @@ class Recieve:
         player1.racket_x2 += 20
         player1.racket_y1 -= 3
         player1.racket_y2 -= 3
-        delay(0.1)
+        delay(0.05)
         player1.stamina_percent -= 30
 
     @staticmethod
@@ -246,12 +258,12 @@ class Player1:
     def update(self):
         self.state_machine.update()
         # 플레이어의 x 좌표 범위 제한
-        self.x = clamp(100 - 10, self.x, 400 - 50)
+        self.x = clamp(100, self.x, 400 - 50)
         # Shuttlecock 움직임 업데이트
         self.shuttlecock.update()
         # 스테미나 채우기
         self.stamina_percent = clamp(0, self.stamina_percent, 640)
-        print(self.stamina_percent)
+        #print(self.stamina_percent)
         if get_time() - self.stamina_start_time > 0.2:
             self.stamina_percent += 10
             self.stamina_start_time = get_time()
@@ -279,10 +291,10 @@ class Player1:
         elif self.state_machine.cur_state == Walk:
             return self.x + 40, self.y + 10, self.x + 70, self.y + 40
         elif self.state_machine.cur_state == Serve:
-            print('서브 겟비비')
+            #print('서브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
         elif self.state_machine.cur_state == Recieve:
-            print('리시브 겟비비')
+            #print('리시브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2
 
     def draw_arrow_box(self):
@@ -302,3 +314,15 @@ class Player1:
 
     def draw_stamina(self):
         self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)
+
+    def handle_collision(self, group, other):
+        if group == 'player:ball':
+            if self.state_machine.cur_state == Recieve:
+                Shuttlecock.start_time = get_time()
+                Shuttlecock.speed_x = RECEIVE_SPEED_PPS
+                Shuttlecock.speed_y = RECEIVE_SPEED_PPS//2
+            elif self.state_machine.cur_state == Serve:
+                print('서브 상태 충돌!!!')
+                Shuttlecock.start_time = get_time()
+                Shuttlecock.speed_x = SERVE_SPEED_PPS
+                Shuttlecock.speed_y = SERVE_SPEED_PPS//2

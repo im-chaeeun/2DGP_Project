@@ -41,11 +41,17 @@ def init():
 
     player1 = Player1()
     game_world.add_object(player1, 1)
+    game_world.add_collision_pair('player1:shuttlecock', player1, None)
+
     player2 = Player2()
     game_world.add_object(player2, 1)
+    game_world.add_collision_pair('player2:shuttlecock', player1, None)
 
     shuttlecock = Shuttlecock()
     game_world.add_object(shuttlecock, 2)
+    game_world.add_collision_pair('player1:shuttlecock', None, shuttlecock)
+    game_world.add_collision_pair('player2:shuttlecock', None, shuttlecock)
+    game_world.add_collision_pair('net:shuttlecock', None, shuttlecock)
 
     scorebox = Scorebox()
     game_world.add_object(scorebox, 3)
@@ -60,14 +66,22 @@ def finish():
 
 def update():
     game_world.update()
-    # fill here
-    # game_world.handle_collisions()
 
     if game_world.collide(shuttlecock, player1):
         print('플레이어1 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
         shuttlecock.speed_y = RUN_SPEED_PPS
+        shuttlecock.dir = 1
         shuttlecock.update()
+
+    if game_world.collide(shuttlecock, player2):
+        print('플레이어2 라켓과 셔틀콕 충돌')
+        shuttlecock.is_flying = True
+        shuttlecock.speed_y = RUN_SPEED_PPS
+        shuttlecock.dir = -1
+        shuttlecock.update()
+
+    game_world.handle_collisions()
 
 def draw():
     clear_canvas()

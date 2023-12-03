@@ -15,4 +15,4 @@ class Net:
     def update(self):
         pass
     def get_bb(self):
-        return self.x - 5, self.y, self.x + 10, self.y + 220
+        return self.x - 10, self.y, self.x + 10, self.y + 220
