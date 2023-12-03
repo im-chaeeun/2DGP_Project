@@ -1,3 +1,4 @@
+from competition.net import Net
 objects = [[] for _ in range(4)]
 collision_pairs = {}
 

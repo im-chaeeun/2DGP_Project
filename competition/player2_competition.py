@@ -307,13 +307,14 @@ class Player2:
         self.stamina_image.clip_draw(0, 0, 333, 10, 797, 590, self.stamina_percent, 10)
 
     def handle_collision(self, group, other):
-        if group == 'player:ball':
-            if self.state_machine.cur_state == Recieve:
-                Shuttlecock.start_time = get_time()
-                Shuttlecock.speed_x = RECEIVE_SPEED_PPS
-                Shuttlecock.speed_y = RECEIVE_SPEED_PPS//2
-            elif self.state_machine.cur_state == Serve:
-                print('서브 상태 충돌!!!')
-                Shuttlecock.start_time = get_time()
-                Shuttlecock.speed_x = SERVE_SPEED_PPS
-                Shuttlecock.speed_y = SERVE_SPEED_PPS//2
+        pass
+        # if group == 'player:ball':
+        #     if self.state_machine.cur_state == Recieve:
+        #         Shuttlecock.start_time = get_time()
+        #         Shuttlecock.speed_x = RECEIVE_SPEED_PPS
+        #         Shuttlecock.speed_y = RECEIVE_SPEED_PPS//2
+        #     elif self.state_machine.cur_state == Serve:
+        #         print('서브 상태 충돌!!!')
+        #         Shuttlecock.start_time = get_time()
+        #         Shuttlecock.speed_x = SERVE_SPEED_PPS
+        #         Shuttlecock.speed_y = SERVE_SPEED_PPS//2
