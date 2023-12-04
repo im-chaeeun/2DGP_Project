@@ -1,5 +1,6 @@
 from pico2d import *
 import game_framework
+import game_world
 from competition import server_competition
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
@@ -36,6 +37,7 @@ class Shuttlecock:
         draw_rectangle(*self.get_bb())
 
     def update(self):
+
         if self.is_flying:
             self.time += 0.1
             self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time  # 방향 나중에 곱해라
@@ -45,6 +47,7 @@ class Shuttlecock:
                 self.speed_y -= RUN_SPEED_PPS
 
             #Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
+
             self.y = max(self.y, 100)
             # Shuttlecock이 땅에 닿았는지 확인
             if self.y == 100:
@@ -83,3 +86,11 @@ class Shuttlecock:
                 server_competition.who_hit_shuttlecock = 'player2'
                 print('플레이어2 승')
                 server_competition.player2_score += 1
+        game_world.remove_object(self)
+
+        self.x, self.y = 260, 265
+        game_world.add_object(self, 2)
+        game_world.add_collision_pair('player1:shuttlecock', None, self)
+        game_world.add_collision_pair('player2:shuttlecock', None, self)
+        game_world.add_collision_pair('net:shuttlecock', None, self)
+
