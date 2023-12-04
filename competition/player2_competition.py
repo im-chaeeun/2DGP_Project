@@ -1,4 +1,5 @@
 import game_framework
+from competition import server_competition
 from competition.shuttlecock_competition import Shuttlecock
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
@@ -68,12 +69,12 @@ class Walk:
     def do(player2):
         player2.frame = (player2.frame + FRAMES_PER_TIME * game_framework.frame_time) % 5
         delay(0.01)
-        player2.x += player2.dir * RUN_SPEED_PPS * game_framework.frame_time
+        server_competition.player2_x += player2.dir * RUN_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
     def draw(player2):
-        player2.image.clip_composite_draw(int(player2.frame) * 50, player2.action * 50, 50, 50, 0, 'h', player2.x, player2.y, 250, 250)
+        player2.image.clip_composite_draw(int(player2.frame) * 50, player2.action * 50, 50, 50, 0, 'h', server_competition.player2_x, player2.y, 250, 250)
 
 class Idle:
     @staticmethod
@@ -96,7 +97,7 @@ class Idle:
 
     @staticmethod
     def draw(player2):
-        player2.image.clip_composite_draw(player2.frame * 50, player2.action * 50, 50, 50, 0, 'h', player2.x, player2.y, 250, 250)
+        player2.image.clip_composite_draw(player2.frame * 50, player2.action * 50, 50, 50, 0, 'h', server_competition.player2_x, player2.y, 250, 250)
         pass
 
 
@@ -132,7 +133,7 @@ class Serve:
 
     @staticmethod
     def draw(player2):
-        player2.image.clip_composite_draw(player2.frame * 50, player2.action * 50, 50, 50, 0, 'h', player2.x, player2.y, 250, 250)
+        player2.image.clip_composite_draw(player2.frame * 50, player2.action * 50, 50, 50, 0, 'h', server_competition.player2_x, player2.y, 250, 250)
 
 
 
@@ -147,8 +148,8 @@ class Recieve:
         player2.frame = 0
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
-        player2.racket_x1, player2.racket_y1 = player2.x + 70, player2.y + 65
-        player2.racket_x2, player2.racket_y2 = player2.x + 100, player2.y + 95
+        player2.racket_x1, player2.racket_y1 = server_competition.player2_x + 70, player2.y + 65
+        player2.racket_x2, player2.racket_y2 = server_competition.player2_x + 100, player2.y + 95
 
     @staticmethod
     def exit(player2, e):
@@ -275,9 +276,9 @@ class Player2:
 
     def get_bb(self):
         if self.state_machine.cur_state == Idle:
-            return self.x - 40, self.y + 10, self.x - 70, self.y + 40
+            return server_competition.player2_x - 70, self.y + 10, server_competition.player2_x - 40, self.y + 40
         elif self.state_machine.cur_state == Walk:
-            return self.x - 40, self.y + 10, self.x - 70, self.y + 40
+            return server_competition.player2_x - 70, self.y + 10, server_competition.player2_x - 40, self.y + 40
         elif self.state_machine.cur_state == Serve:
             #print('서브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2

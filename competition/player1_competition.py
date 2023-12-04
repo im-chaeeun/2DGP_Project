@@ -56,12 +56,12 @@ class Walk:
     def do(player1):
         player1.frame = (player1.frame + FRAMES_PER_TIME * game_framework.frame_time) % 5
         delay(0.01)
-        player1.x += player1.dir * RUN_SPEED_PPS * game_framework.frame_time
+        server_competition.player1_x += player1.dir * RUN_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
     def draw(player1):
-        player1.image.clip_draw(int(player1.frame) * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        player1.image.clip_draw(int(player1.frame) * 50, player1.action * 50, 50, 50, server_competition.player1_x, player1.y, 250, 250)
 
 
 class Idle:
@@ -85,7 +85,7 @@ class Idle:
 
     @staticmethod
     def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, server_competition.player1_x, player1.y, 250, 250)
         pass
 
 
@@ -102,8 +102,8 @@ class Serve:
         # print("Serve state")  # 디버깅용 출력
 
         # get_bb를 위한 라켓값을 enter할 때 받아서 do에서 수정하도록!
-        player1.racket_x1, player1.racket_y1 = player1.x + 45, player1.y - 20
-        player1.racket_x2, player1.racket_y2 = player1.x + 75, player1.y + 10
+        player1.racket_x1, player1.racket_y1 = server_competition.player1_x + 45, player1.y - 20
+        player1.racket_x2, player1.racket_y2 = server_competition.player1_x + 75, player1.y + 10
 
 
     @staticmethod
@@ -124,13 +124,13 @@ class Serve:
 
     @staticmethod
     def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, server_competition.player1_x, player1.y, 250, 250)
         pass
 
 
     @staticmethod
     def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, server_competition.player1_x, player1.y, 250, 250)
         pass
 
 
@@ -145,8 +145,8 @@ class Recieve:
         player1.frame = 0
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
-        player1.racket_x1, player1.racket_y1 = player1.x - 120, player1.y + 65
-        player1.racket_x2, player1.racket_y2 = player1.x - 100, player1.y + 95
+        player1.racket_x1, player1.racket_y1 = server_competition.player1_x - 120, player1.y + 65
+        player1.racket_x2, player1.racket_y2 = server_competition.player1_x - 100, player1.y + 95
         pass
 
     @staticmethod
@@ -165,7 +165,7 @@ class Recieve:
 
     @staticmethod
     def draw(player1):
-        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, player1.x, player1.y, 250, 250)
+        player1.image.clip_draw(player1.frame * 50, player1.action * 50, 50, 50, server_competition.player1_x, player1.y, 250, 250)
         pass
 
 
@@ -214,7 +214,7 @@ class StateMachine:
 class Player1:
 
     def __init__(self):
-        self.x, self.y = 200, 200
+        self.y = 200
         self.frame, self.frame_num = 0, 0
         self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
@@ -249,7 +249,7 @@ class Player1:
     def update(self):
         self.state_machine.update()
         # 플레이어의 x 좌표 범위 제한
-        self.x = clamp(50, self.x, 400 - 50)
+        server_competition.player1_x = clamp(50, server_competition.player1_x, 400 - 50)
         # Shuttlecock 움직임 업데이트
         self.shuttlecock.update()
         # 스테미나 채우기
@@ -278,9 +278,9 @@ class Player1:
 
     def get_bb(self):
         if self.state_machine.cur_state == Idle:
-            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+            return server_competition.player1_x + 40, int(self.y) + 10, server_competition.player1_x + 70, int(self.y) + 40
         elif self.state_machine.cur_state == Walk:
-            return self.x + 40, self.y + 10, self.x + 70, self.y + 40
+            return server_competition.player1_x + 40, int(self.y) + 10, server_competition.player1_x + 70, int(self.y) + 40
         elif self.state_machine.cur_state == Serve:
             #print('서브 겟비비')
             return self.racket_x1, self.racket_y1, self.racket_x2, self.racket_y2

@@ -4,6 +4,7 @@ import game_framework
 import game_world
 from competition import net, server_competition
 from competition.net import Net
+from competition.notice_set_num import Notice_Set_Num
 from competition.player1_competition import Player1
 from competition.player2_competition import Player2
 from court import Court
@@ -57,6 +58,7 @@ def init():
     global shuttlecock
     global net
     global font
+    global set_num
 
     running = True
 
@@ -84,6 +86,8 @@ def init():
     net = Net()
     game_world.add_object(net, 1)
 
+    set_num = Notice_Set_Num()
+    game_world.add_object(set_num, 3)
 def finish():
     game_world.clear()
     pass
@@ -116,6 +120,8 @@ def update():
         shuttlecock.update()
 
     game_world.handle_collisions()
+
+
 
 def draw():
     clear_canvas()

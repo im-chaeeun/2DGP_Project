@@ -1,7 +1,10 @@
+import threading
+
 from pico2d import *
 import game_framework
 import game_world
 from competition import server_competition
+
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 20.0   # 20km/h
@@ -30,7 +33,8 @@ class Shuttlecock:
         self.who_hit_shuttlecock = None
         self.who_get_score = 'player1'
         self.player1_score, self.player2_score = 0, 0
-        self.remove_wait_time = 0
+
+
     def draw(self):
         # 코트 왼쪽에 있을 때 셔틀콕 그리기
         if self.x <= 200:
@@ -99,12 +103,17 @@ class Shuttlecock:
                 server_competition.player2_score += 1
                 server_competition.who_get_score = 'player2'
 
+
         game_world.remove_object(self)
+
+
         #  셔틀콕과 플레이어 위치 초기화
         if server_competition.who_get_score == 'player1':
             self.x, self.y = 260, 265
         elif server_competition.who_get_score == 'player2':
             self.x, self.y = 540, 265
+        server_competition.player1_x = 200
+        server_competition.player2_x = 600
         game_world.add_object(self, 2)
         game_world.add_collision_pair('player1:shuttlecock', None, self)
         game_world.add_collision_pair('player2:shuttlecock', None, self)
