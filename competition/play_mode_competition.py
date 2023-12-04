@@ -9,6 +9,7 @@ from competition.player2_competition import Player2
 from court import Court
 from competition.scorebox import Scorebox
 from competition.shuttlecock_competition import Shuttlecock
+from mode import title_mode
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
 RUN_SPEED_KMPH = 25.0   # 20km/h
@@ -41,9 +42,11 @@ def handle_events():
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
-            game_framework.quit()
+            # game_framework.quit()
+            game_framework.change_mode(title_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            # game_framework.quit()
+            game_framework.change_mode(title_mode)
         else:
             player1.handle_event(event)
             player2.handle_event(event)

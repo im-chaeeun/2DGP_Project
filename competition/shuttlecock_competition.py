@@ -17,7 +17,6 @@ GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
 
 class Shuttlecock:
     image = None
-
     def __init__(self):
         self.image = load_image('resource/shuttlecock.png')
         self.x, self.y = 260, 265
@@ -31,9 +30,13 @@ class Shuttlecock:
         self.who_hit_shuttlecock = None
         self.who_get_score = 'player1'
         self.player1_score, self.player2_score = 0, 0
-
+        self.remove_wait_time = 0
     def draw(self):
-        self.image.clip_draw(0, 0, 7, 8, self.x, self.y, 28, 32)
+        if self.x <= 400:
+            self.image.clip_composite_draw(0, 0, 7, 8, -130, ' ', self.x, self.y, 28, 32)
+        if self.x > 400:
+            self.image.clip_composite_draw(0, 0, 7, 8, 130, ' ', self.x, self.y, 28, 32)
+
         draw_rectangle(*self.get_bb())
 
     def update(self):
@@ -90,8 +93,9 @@ class Shuttlecock:
                 print('플레이어2 승')
                 server_competition.player2_score += 1
                 server_competition.who_get_score = 'player2'
-        game_world.remove_object(self)
 
+        game_world.remove_object(self)
+        #  셔틀콕과 플레이어 위치 초기화
         if server_competition.who_get_score == 'player1':
             self.x, self.y = 260, 265
         elif server_competition.who_get_score == 'player2':
@@ -100,4 +104,9 @@ class Shuttlecock:
         game_world.add_collision_pair('player1:shuttlecock', None, self)
         game_world.add_collision_pair('player2:shuttlecock', None, self)
         game_world.add_collision_pair('net:shuttlecock', None, self)
+
+
+
+
+
 
