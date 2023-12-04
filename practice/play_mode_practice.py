@@ -2,14 +2,12 @@ from pico2d import *
 import game_framework
 
 import game_world
-from competition import net, server_competition
-from competition.net import Net
-from competition.notice_set_num import Notice_Set_Num
-from competition.player1_competition import Player1
-from competition.player2_competition import Player2
+from practice import net_practice, server_practice
+from practice.net_practice import Net
+from practice.player_prcatice import Player
 from court import Court
-from competition.scorebox import Scorebox
-from competition.shuttlecock_competition import Shuttlecock
+from practice.scorebox import Scorebox
+from practice.shuttlecock_practice import Shuttlecock_Practice
 from mode import title_mode
 
 PIXEL_PER_METER = (10.0/0.3)    # 10pixel 30cm
@@ -39,11 +37,10 @@ def handle_events():
             # game_framework.quit()
             game_framework.change_mode(title_mode)
         else:
-            player1.handle_event(event)
-            player2.handle_event(event)
+            player.handle_event(event)
 
 def init():
-    global player1, player2
+    global player
     global scorebox
     global shuttlecock
     global net
@@ -55,15 +52,12 @@ def init():
     court = Court()
     game_world.add_object(court, 0)
 
-    player1 = Player1()
-    game_world.add_object(player1, 1)
-    game_world.add_collision_pair('player1:shuttlecock', player1, None)
+    player = Player()
+    game_world.add_object(player, 1)
+    game_world.add_collision_pair('player1:shuttlecock', player, None)
 
-    player2 = Player2()
-    game_world.add_object(player2, 1)
-    game_world.add_collision_pair('player2:shuttlecock', player1, None)
 
-    shuttlecock = Shuttlecock()
+    shuttlecock = Shuttlecock_Practice()
     game_world.add_object(shuttlecock, 2)
     game_world.add_collision_pair('player1:shuttlecock', None, shuttlecock)
     game_world.add_collision_pair('player2:shuttlecock', None, shuttlecock)
@@ -76,8 +70,6 @@ def init():
     net = Net()
     game_world.add_object(net, 1)
 
-    set_num = Notice_Set_Num()
-    game_world.add_object(set_num, 3)
 def finish():
     game_world.clear()
     pass
@@ -86,21 +78,13 @@ def finish():
 def update():
     game_world.update()
     shuttlecock.y = max(shuttlecock.y, 100)
-    if game_world.collide(shuttlecock, player1):
-        print('플레이어1 라켓과 셔틀콕 충돌')
+    if game_world.collide(shuttlecock, player):
+        print('플레이어 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
-        server_competition.who_hit_shuttlecock = 'player1'
         shuttlecock.speed_y = RECEIVE_SPEED_PPS
         shuttlecock.dir = 1
         shuttlecock.update()
 
-    if game_world.collide(shuttlecock, player2):
-        print('플레이어2 라켓과 셔틀콕 충돌')
-        shuttlecock.is_flying = True
-        server_competition.who_hit_shuttlecock = 'player2'
-        shuttlecock.speed_y = RECEIVE_SPEED_PPS
-        shuttlecock.dir = -1
-        shuttlecock.update()
 
     if game_world.collide(shuttlecock, net):
         print('네트와 셔틀콕 충돌')

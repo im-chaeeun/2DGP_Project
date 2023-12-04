@@ -18,7 +18,7 @@ GRAVITY_SPEED_MPS = 9.8
 GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
 
 
-class Shuttlecock:
+class Shuttlecock_Practice:
     image = None
     def __init__(self):
         self.image = load_image('resource/shuttlecock.png')

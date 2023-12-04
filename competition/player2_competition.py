@@ -103,17 +103,17 @@ class Idle:
 
 class Serve:
     @staticmethod
-    def enter(player1, e):
-        if player1.action == 0:
-            player1.action = 1
-        elif player1.action == 2:
-            player1.action = 1
-        player1.dir = 0
-        player1.frame = 0
+    def enter(player2, e):
+        if player2.action == 0:
+            player2.action = 1
+        elif player2.action == 2:
+            player2.action = 1
+        player2.dir = 0
+        player2.frame = 0
 
         # get_bb를 위한 라켓값을 enter할 때 받아서 do에서 수정하도록!
-        player1.racket_x1, player1.racket_y1 = player1.x - 75, player1.y - 20
-        player1.racket_x2, player1.racket_y2 = player1.x - 45, player1.y + 10
+        player2.racket_x1, player2.racket_y1 = server_competition.player2_x - 75, player2.y - 20
+        player2.racket_x2, player2.racket_y2 = server_competition.player2_x - 45, player2.y + 10
 
 
     @staticmethod
@@ -148,7 +148,7 @@ class Recieve:
         player2.frame = 0
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
-        player2.racket_x1, player2.racket_y1 = server_competition.player2_x + 70, player2.y + 65
+        player2.racket_x1, player2.racket_y1 = server_competition.player2_x + 40, player2.y + 65
         player2.racket_x2, player2.racket_y2 = server_competition.player2_x + 100, player2.y + 95
 
     @staticmethod

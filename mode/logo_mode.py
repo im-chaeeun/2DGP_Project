@@ -1,7 +1,7 @@
 from pico2d import load_image, clear_canvas, update_canvas, get_events, get_time
 import game_framework
 from competition import play_mode_competition
-import play_mode_practice
+from practice import play_mode_practice
 from mode import title_mode
 
 

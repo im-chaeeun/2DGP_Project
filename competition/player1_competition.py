@@ -145,8 +145,8 @@ class Recieve:
         player1.frame = 0
 
         # do에서 수정할 수 있도록 라켓의 위치를 받아옴
-        player1.racket_x1, player1.racket_y1 = server_competition.player1_x - 120, player1.y + 65
-        player1.racket_x2, player1.racket_y2 = server_competition.player1_x - 100, player1.y + 95
+        player1.racket_x1, player1.racket_y1 = server_competition.player1_x - 100, player1.y + 65
+        player1.racket_x2, player1.racket_y2 = server_competition.player1_x - 40, player1.y + 95
         pass
 
     @staticmethod
@@ -307,14 +307,4 @@ class Player1:
         self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)
 
     def handle_collision(self, group, other):
-        # if group == 'player:ball':
-        #     if self.state_machine.cur_state == Recieve:
-        #         Shuttlecock.start_time = get_time()
-        #         Shuttlecock.speed_x = RECEIVE_SPEED_PPS
-        #         Shuttlecock.speed_y = RECEIVE_SPEED_PPS//2
-        #     elif self.state_machine.cur_state == Serve:
-        #         print('서브 상태 충돌!!!')
-        #         Shuttlecock.start_time = get_time()
-        #         Shuttlecock.speed_x = SERVE_SPEED_PPS
-        #         Shuttlecock.speed_y = SERVE_SPEED_PPS//2
         pass
