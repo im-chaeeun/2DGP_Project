@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 
 import game_world
-from competition import net
+from competition import net, server_competition
 from competition.net import Net
 from competition.player1_competition import Player1
 from competition.player2_competition import Player2
@@ -92,7 +92,7 @@ def update():
     if game_world.collide(shuttlecock, player1):
         print('플레이어1 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
-        shuttlecock.who_hit_shuttlecock = 'player1'
+        server_competition.who_hit_shuttlecock = 'player1'
         shuttlecock.speed_y = RECEIVE_SPEED_PPS
         shuttlecock.dir = 1
         shuttlecock.update()
@@ -100,7 +100,7 @@ def update():
     if game_world.collide(shuttlecock, player2):
         print('플레이어2 라켓과 셔틀콕 충돌')
         shuttlecock.is_flying = True
-        shuttlecock.who_hit_shuttlecock = 'player2'
+        server_competition.who_hit_shuttlecock = 'player2'
         shuttlecock.speed_y = RECEIVE_SPEED_PPS
         shuttlecock.dir = -1
         shuttlecock.update()

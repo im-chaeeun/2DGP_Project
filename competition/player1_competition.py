@@ -218,7 +218,7 @@ class Player1:
         self.frame, self.frame_num = 0, 0
         self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
-        self.score, self.setscore = 0, 0  # 점수 추가
+
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.player_turn = True
@@ -267,8 +267,6 @@ class Player1:
 
     def draw(self):
         self.state_machine.draw()
-        # Shuttlecock 그리기
-        self.shuttlecock.draw()
         # 충돌 체크 박스
         draw_rectangle(*self.get_bb())
         # 화살표 박스 그리기

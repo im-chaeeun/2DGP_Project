@@ -50,7 +50,7 @@ class Shuttlecock:
             if self.y == 100:
                 self.is_flying = False
                 self.time = 0
-                # self.check_who_get_score()
+                self.check_who_get_score()
 
 
 
@@ -64,22 +64,22 @@ class Shuttlecock:
     def handle_collision(self, group, other):
         pass
 
-    # def check_who_get_score(self):
-    #     if self.who_hit_shuttlecock == 'player1':
-    #         if self.x > 700 or self.x < 400:
-    #             self.who_get_score = 'player2'
-    #             print('플레이어2 승')
-    #             self.player2_score += 1
-    #         else:
-    #             self.who_get_score = 'player1'
-    #             print('플레이어1 승')
-    #             self.player1_score += 1
-    #     elif self.who_hit_shuttlecock == 'player2':
-    #         if self.x < 100 or self.x > 400:
-    #             self.who_get_score = 'player1'
-    #             print('플레이어1 승')
-    #             self.player1_score += 1
-    #         else:
-    #             self.who_get_score = 'player2'
-    #             print('플레이어2 승')
-    #             self.player2_score += 1
+    def check_who_get_score(self):
+        if server_competition.who_hit_shuttlecock == 'player1':
+            if self.x > 700 or self.x < 400:
+                server_competition.who_get_score = 'player2'
+                print('플레이어2 승')
+                server_competition.player2_score += 1
+            else:
+                server_competition.who_hit_shuttlecock = 'player1'
+                print('플레이어1 승')
+                server_competition.player1_score += 1
+        elif server_competition.who_hit_shuttlecock == 'player2':
+            if self.x < 100 or self.x > 400:
+                server_competition.who_get_score = 'player1'
+                print('플레이어1 승')
+                server_competition.player1_score += 1
+            else:
+                server_competition.who_hit_shuttlecock = 'player2'
+                print('플레이어2 승')
+                server_competition.player2_score += 1
