@@ -249,7 +249,7 @@ class Player1:
     def update(self):
         self.state_machine.update()
         # 플레이어의 x 좌표 범위 제한
-        self.x = clamp(100, self.x, 400 - 50)
+        self.x = clamp(50, self.x, 400 - 50)
         # Shuttlecock 움직임 업데이트
         self.shuttlecock.update()
         # 스테미나 채우기

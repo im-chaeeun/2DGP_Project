@@ -241,14 +241,14 @@ class Player2:
         self.image_recieve_press = load_image('resource/arrow_recieve_press.png')
 
         # 스테미나
-        self.stamina_percent, self.stamina_start_time = 500, 0
+        self.stamina_percent, self.stamina_start_time = 640, 0
         self.stamina_image = load_image('resource/stamina.png')
 
     def update(self):
         self.state_machine.update()
 
         # x 좌표 범위 제한
-        self.x = clamp(400 + 50, self.x, 700)
+        self.x = clamp(400 + 50, self.x, 750)
         # Shuttlecock 업데이트
         self.shuttlecock.update()
         # 스테미나 채우기

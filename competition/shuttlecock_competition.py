@@ -73,22 +73,29 @@ class Shuttlecock:
                 server_competition.who_get_score = 'player2'
                 print('플레이어2 승')
                 server_competition.player2_score += 1
+                server_competition.who_get_score = 'player2'
             else:
                 server_competition.who_hit_shuttlecock = 'player1'
                 print('플레이어1 승')
                 server_competition.player1_score += 1
+                server_competition.who_get_score = 'player1'
         elif server_competition.who_hit_shuttlecock == 'player2':
             if self.x < 100 or self.x > 400:
                 server_competition.who_get_score = 'player1'
                 print('플레이어1 승')
                 server_competition.player1_score += 1
+                server_competition.who_get_score = 'player1'
             else:
                 server_competition.who_hit_shuttlecock = 'player2'
                 print('플레이어2 승')
                 server_competition.player2_score += 1
+                server_competition.who_get_score = 'player2'
         game_world.remove_object(self)
 
-        self.x, self.y = 260, 265
+        if server_competition.who_get_score == 'player1':
+            self.x, self.y = 260, 265
+        elif server_competition.who_get_score == 'player2':
+            self.x, self.y = 540, 265
         game_world.add_object(self, 2)
         game_world.add_collision_pair('player1:shuttlecock', None, self)
         game_world.add_collision_pair('player2:shuttlecock', None, self)
