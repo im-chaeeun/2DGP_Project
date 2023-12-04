@@ -6,6 +6,7 @@ from practice import net_practice, server_practice
 from practice.net_practice import Net
 from practice.player_prcatice import Player
 from court import Court
+from practice.practice_machine import Practice_Machine
 from practice.scorebox import Scorebox
 from practice.shuttlecock_practice import Shuttlecock_Practice
 from mode import title_mode
@@ -42,10 +43,11 @@ def handle_events():
 def init():
     global player
     global scorebox
-    global shuttlecock
+    global shuttlecock_practice
     global net
     global font
     global set_num
+    global practice_machine
 
     running = True
 
@@ -54,14 +56,13 @@ def init():
 
     player = Player()
     game_world.add_object(player, 1)
-    game_world.add_collision_pair('player1:shuttlecock', player, None)
+    game_world.add_collision_pair('player:shuttlecock', player, None)
 
 
-    shuttlecock = Shuttlecock_Practice()
-    game_world.add_object(shuttlecock, 2)
-    game_world.add_collision_pair('player1:shuttlecock', None, shuttlecock)
-    game_world.add_collision_pair('player2:shuttlecock', None, shuttlecock)
-    game_world.add_collision_pair('net:shuttlecock', None, shuttlecock)
+    shuttlecock_practice = Shuttlecock_Practice()
+    game_world.add_object(shuttlecock_practice, 2)
+    game_world.add_collision_pair('player:shuttlecock', None, shuttlecock_practice)
+    game_world.add_collision_pair('net:shuttlecock', None, shuttlecock_practice)
 
     scorebox = Scorebox()
     game_world.add_object(scorebox, 3)
@@ -70,6 +71,9 @@ def init():
     net = Net()
     game_world.add_object(net, 1)
 
+    practice_machine = Practice_Machine()
+    game_world.add_object(practice_machine, 2)
+
 def finish():
     game_world.clear()
     pass
@@ -77,21 +81,21 @@ def finish():
 
 def update():
     game_world.update()
-    shuttlecock.y = max(shuttlecock.y, 100)
-    if game_world.collide(shuttlecock, player):
+    shuttlecock_practice.y = max(shuttlecock_practice.y, 100)
+    if game_world.collide(shuttlecock_practice, player):
         print('플레이어 라켓과 셔틀콕 충돌')
-        shuttlecock.is_flying = True
-        shuttlecock.speed_y = RECEIVE_SPEED_PPS
-        shuttlecock.dir = 1
-        shuttlecock.update()
+        shuttlecock_practice.is_flying = True
+        shuttlecock_practice.speed_y = RECEIVE_SPEED_PPS
+        shuttlecock_practice.dir = 1
+        shuttlecock_practice.update()
 
 
-    if game_world.collide(shuttlecock, net):
+    if game_world.collide(shuttlecock_practice, net):
         print('네트와 셔틀콕 충돌')
-        shuttlecock.is_flying = True
-        shuttlecock.speed_y = NET_SPEED_PPS
-        shuttlecock.dir *= -1
-        shuttlecock.update()
+        shuttlecock_practice.is_flying = True
+        shuttlecock_practice.speed_y = NET_SPEED_PPS
+        shuttlecock_practice.dir *= -1
+        shuttlecock_practice.update()
 
     game_world.handle_collisions()
 

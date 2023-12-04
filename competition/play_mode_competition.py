@@ -49,6 +49,7 @@ def init():
     global net
     global font
     global set_num
+    global racket_hit_sound
 
     running = True
 
@@ -69,6 +70,10 @@ def init():
     game_world.add_collision_pair('player2:shuttlecock', None, shuttlecock)
     game_world.add_collision_pair('net:shuttlecock', None, shuttlecock)
 
+
+    racket_hit_sound = load_wav('resource/sound_attack.wav')
+    racket_hit_sound.set_volume(45)
+
     scorebox = Scorebox()
     game_world.add_object(scorebox, 3)
     font = load_font('resource/ENCR10B.TTF', 40)
@@ -88,6 +93,7 @@ def update():
     shuttlecock.y = max(shuttlecock.y, 100)
     if game_world.collide(shuttlecock, player1):
         print('플레이어1 라켓과 셔틀콕 충돌')
+        racket_hit_sound.play()
         shuttlecock.is_flying = True
         server_competition.who_hit_shuttlecock = 'player1'
         shuttlecock.speed_y = RECEIVE_SPEED_PPS
@@ -96,6 +102,7 @@ def update():
 
     if game_world.collide(shuttlecock, player2):
         print('플레이어2 라켓과 셔틀콕 충돌')
+        racket_hit_sound.play()
         shuttlecock.is_flying = True
         server_competition.who_hit_shuttlecock = 'player2'
         shuttlecock.speed_y = RECEIVE_SPEED_PPS

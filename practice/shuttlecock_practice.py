@@ -22,18 +22,15 @@ class Shuttlecock_Practice:
     image = None
     def __init__(self):
         self.image = load_image('resource/shuttlecock.png')
-        self.x, self.y = 260, 265
+        self.x, self.y = 600, 500
 
         self.time = 0
-        self.is_flying = False
+        self.is_flying = True
         self.state = 'Idle'
         self.start_time = get_time()
         self.speed_y = 0
-        self.dir = 0
-        self.who_hit_shuttlecock = None
-        self.who_get_score = 'player1'
-        self.player1_score, self.player2_score = 0, 0
-
+        self.dir = -1
+        self.is_removed = False  # 객체가 삭제되었는지 여부를 나타내는 변수
 
     def draw(self):
         # 코트 왼쪽에 있을 때 셔틀콕 그리기
@@ -64,9 +61,20 @@ class Shuttlecock_Practice:
             if self.y == 100:
                 self.is_flying = False
                 self.time = 0
-                self.check_who_get_score()
+                # self.check_who_get_score()
+                # game_world.remove_object(self)
 
-
+                #  셔틀콕과 플레이어 위치 초기화
+                if server_competition.who_get_score == 'player1':
+                    self.x, self.y = 260, 265
+                elif server_competition.who_get_score == 'player2':
+                    self.x, self.y = 540, 265
+                server_competition.player1_x = 200
+                server_competition.player2_x = 600
+                game_world.add_object(self, 2)
+                game_world.add_collision_pair('player1:shuttlecock', None, self)
+                game_world.add_collision_pair('player2:shuttlecock', None, self)
+                game_world.add_collision_pair('net:shuttlecock', None, self)
 
     def get_bb(self):
         return self.x - 14, self.y - 16, self.x + 14, self.y + 16
@@ -78,46 +86,32 @@ class Shuttlecock_Practice:
     def handle_collision(self, group, other):
         pass
 
-    def check_who_get_score(self):
-        if server_competition.who_hit_shuttlecock == 'player1':
-            if self.x > 700 or self.x < 400:
-                server_competition.who_get_score = 'player2'
-                print('플레이어2 승')
-                server_competition.player2_score += 1
-                server_competition.who_get_score = 'player2'
-            else:
-                server_competition.who_hit_shuttlecock = 'player1'
-                print('플레이어1 승')
-                server_competition.player1_score += 1
-                server_competition.who_get_score = 'player1'
-        elif server_competition.who_hit_shuttlecock == 'player2':
-            if self.x < 100 or self.x > 400:
-                server_competition.who_get_score = 'player1'
-                print('플레이어1 승')
-                server_competition.player1_score += 1
-                server_competition.who_get_score = 'player1'
-            else:
-                server_competition.who_hit_shuttlecock = 'player2'
-                print('플레이어2 승')
-                server_competition.player2_score += 1
-                server_competition.who_get_score = 'player2'
-
-
-        game_world.remove_object(self)
-
-
-        #  셔틀콕과 플레이어 위치 초기화
-        if server_competition.who_get_score == 'player1':
-            self.x, self.y = 260, 265
-        elif server_competition.who_get_score == 'player2':
-            self.x, self.y = 540, 265
-        server_competition.player1_x = 200
-        server_competition.player2_x = 600
-        game_world.add_object(self, 2)
-        game_world.add_collision_pair('player1:shuttlecock', None, self)
-        game_world.add_collision_pair('player2:shuttlecock', None, self)
-        game_world.add_collision_pair('net:shuttlecock', None, self)
-
+    # def check_who_get_score(self):
+    #     if server_competition.who_hit_shuttlecock == 'player1':
+    #         if self.x > 700 or self.x < 400:
+    #             server_competition.who_get_score = 'player2'
+    #             print('플레이어2 승')
+    #             server_competition.player2_score += 1
+    #             server_competition.who_get_score = 'player2'
+    #         else:
+    #             server_competition.who_hit_shuttlecock = 'player1'
+    #             print('플레이어1 승')
+    #             server_competition.player1_score += 1
+    #             server_competition.who_get_score = 'player1'
+    #     elif server_competition.who_hit_shuttlecock == 'player2':
+    #         if self.x < 100 or self.x > 400:
+    #             server_competition.who_get_score = 'player1'
+    #             print('플레이어1 승')
+    #             server_competition.player1_score += 1
+    #             server_competition.who_get_score = 'player1'
+    #         else:
+    #             server_competition.who_hit_shuttlecock = 'player2'
+    #             print('플레이어2 승')
+    #             server_competition.player2_score += 1
+    #             server_competition.who_get_score = 'player2'
+    #
+    #
+    #
 
 
 

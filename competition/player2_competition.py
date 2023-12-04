@@ -167,7 +167,7 @@ class Recieve:
 
     @staticmethod
     def draw(player2):
-        player2.image.clip_composite_draw(player2.frame * 50, player2.action * 50, 50, 50, 0, 'h',player2.x, player2.y, 250, 250)
+        player2.image.clip_composite_draw(player2.frame * 50, player2.action * 50, 50, 50, 0, 'h', server_competition.player2_x, player2.y, 250, 250)
         pass
 
 
@@ -219,7 +219,7 @@ class StateMachine:
 class Player2:
 
     def __init__(self):
-        self.x, self.y = 600, 200
+        self.y = 200
         self.frame = 0
         self.image = load_image('resource/character.png')
         self.action = 0  # 'action' 속성 추가
@@ -249,7 +249,7 @@ class Player2:
         self.state_machine.update()
 
         # x 좌표 범위 제한
-        self.x = clamp(400 + 50, self.x, 750)
+        server_competition.player2_x = clamp(400 + 50, server_competition.player2_x, 750)
         # Shuttlecock 업데이트
         self.shuttlecock.update()
         # 스테미나 채우기
