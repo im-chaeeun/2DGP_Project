@@ -72,7 +72,7 @@ def init():
 
 
     racket_hit_sound = load_wav('resource/sound_attack.wav')
-    racket_hit_sound.set_volume(45)
+    racket_hit_sound.set_volume(60)
 
     scorebox = Scorebox()
     game_world.add_object(scorebox, 3)

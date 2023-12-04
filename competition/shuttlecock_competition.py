@@ -46,7 +46,7 @@ class Shuttlecock:
             self.image.clip_composite_draw(0, 0, 7, 8, 130, ' ', self.x, self.y, 28, 32)
         elif self.x > 600 and self.x:
              self.image.clip_composite_draw(0, 0, 7, 8, 80, ' ', self.x, self.y, 28, 32)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
 

@@ -9,6 +9,6 @@ from mode import title_mode
 from competition import play_mode_competition
 
 open_canvas()
-game_framework.run(play_mode_competition)
+game_framework.run(title_mode)
 
 close_canvas()

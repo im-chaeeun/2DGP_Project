@@ -1,4 +1,4 @@
-from pico2d import load_image, clear_canvas, update_canvas, get_events, SDL_KEYDOWN,  SDLK_ESCAPE
+from pico2d import load_image, clear_canvas, update_canvas, get_events, SDL_KEYDOWN, SDLK_ESCAPE, load_music
 from sdl2 import SDLK_2, SDLK_1
 
 import game_framework
@@ -6,8 +6,12 @@ from mode import logo_mode
 
 
 def init():
-    global image
+    global image, bgm
+
     image = load_image('resource/title_screen.png')
+    bgm = load_music('resource/football.mp3')
+    bgm.set_volume(50)
+    bgm.repeat_play()
     pass
 
 def finish():
