@@ -18,8 +18,10 @@ GRAVITY_SPEED_MPS = 9.8
 GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
 
 
+
 class Shuttlecock:
     image = None
+
     def __init__(self):
         self.image = load_image('resource/shuttlecock.png')
         self.x, self.y = 260, 265
@@ -33,8 +35,9 @@ class Shuttlecock:
         self.who_hit_shuttlecock = None
         self.who_get_score = 'player1'
         self.player1_score, self.player2_score = 0, 0
-
-
+        # # 환호 소리
+        # cheering = load_music('resourse/cheering.mp3')
+        # cheering.set_volume(40)
     def draw(self):
         # 코트 왼쪽에 있을 때 셔틀콕 그리기
         if self.x <= 200:
@@ -65,6 +68,7 @@ class Shuttlecock:
                 self.is_flying = False
                 self.time = 0
                 self.check_who_get_score()
+                cheering.play()
 
 
 
