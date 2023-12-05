@@ -48,6 +48,7 @@ def init():
     global font
     global set_num
     global practice_machine
+    global racket_hit_sound
 
     running = True
 
@@ -74,6 +75,10 @@ def init():
     practice_machine = Practice_Machine()
     game_world.add_object(practice_machine, 2)
 
+    racket_hit_sound = load_wav('resource/sound_attack.wav')
+    racket_hit_sound.set_volume(60)
+
+
 def finish():
     game_world.clear()
     pass
@@ -84,6 +89,7 @@ def update():
     shuttlecock_practice.y = max(shuttlecock_practice.y, 100)
     if game_world.collide(shuttlecock_practice, player):
         print('플레이어 라켓과 셔틀콕 충돌')
+        racket_hit_sound.play()
         shuttlecock_practice.is_flying = True
         shuttlecock_practice.speed_y = RECEIVE_SPEED_PPS
         shuttlecock_practice.dir = 1

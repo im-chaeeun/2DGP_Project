@@ -10,15 +10,17 @@ from competition.shuttlecock_competition import Shuttlecock
 class Notice_Set_Num:
     def __init__(self):
         self.image = load_image('resource/notice_set_num.png')
-        self.font = load_font('resource/ENCR10B.TTF', 30)
+        self.font = load_font('resource/ENCR10B.TTF', 40)
         self.timer_set = False
     def draw(self):
         if server_competition.player1_set_score == 3:
             self.image.draw(400, 300)
-            self.font.draw(280, 300, f'player1 win!!!')
+            self.font.draw(255, 320, f'player1 win!!!', (255, 255, 255))
+            self.font.draw(290, 260, f'press ESC', (255, 255, 255))
         if server_competition.player2_set_score == 3:
             self.image.draw(400, 300)
-            self.font.draw(280, 300, f'player2 win!!!')
+            self.font.draw(255, 320, f'player2 win!!!', (255, 255, 255))
+            self.font.draw(290, 260, f'press ESC', (255, 255, 255))
     def update(self):
         if server_competition.player1_score == 5:
             server_competition.player1_set_score += 1

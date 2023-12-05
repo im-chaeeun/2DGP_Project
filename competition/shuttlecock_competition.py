@@ -40,16 +40,15 @@ class Shuttlecock:
         self.cheering.set_volume(40)
 
     def draw(self):
-        # 코트 왼쪽에 있을 때 셔틀콕 그리기
-        if self.x <= 200:
+        if self.y <= 300 and self.x <= 400:
             self.image.clip_composite_draw(0, 0, 7, 8, -130, ' ', self.x, self.y, 28, 32)
-        elif self.x > 200 and self.x <= 400:
-            self.image.clip_composite_draw(0, 0, 7, 8, -80, ' ', self.x, self.y, 28, 32)
+        elif self.y > 300 and self.x <= 400:
+            self.image.clip_composite_draw(0, 0, 7, 8, -50, ' ', self.x, self.y, 28, 32)
         # 코트 오른쪽에 있을 때 셔틀콕 그리기
-        if self.x > 400 and self.x <= 600:
+        if self.y <= 300 and self.x > 400:
             self.image.clip_composite_draw(0, 0, 7, 8, 130, ' ', self.x, self.y, 28, 32)
-        elif self.x > 600 and self.x:
-             self.image.clip_composite_draw(0, 0, 7, 8, 80, ' ', self.x, self.y, 28, 32)
+        elif self.y > 300 and self.x > 400:
+            self.image.clip_composite_draw(0, 0, 7, 8, 50, ' ', self.x, self.y, 28, 32)
         # draw_rectangle(*self.get_bb())
 
     def update(self):

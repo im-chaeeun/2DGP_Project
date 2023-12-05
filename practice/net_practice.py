@@ -7,7 +7,8 @@ class Net:
         self.y = 50
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        pass
+        #draw_rectangle(*self.get_bb())
 
     def update(self):
         pass

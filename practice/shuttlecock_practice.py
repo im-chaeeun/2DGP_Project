@@ -30,18 +30,18 @@ class Shuttlecock_Practice:
         self.dir = -1
         self.is_removed = False  # 객체가 삭제되었는지 여부를 나타내는 변수
 
+
     def draw(self):
-        # 코트 왼쪽에 있을 때 셔틀콕 그리기
-        if self.x <= 200:
+        if self.y <= 300 and self.x <= 400:
             self.image.clip_composite_draw(0, 0, 7, 8, -130, ' ', self.x, self.y, 28, 32)
-        elif self.x > 200 and self.x <= 400:
-            self.image.clip_composite_draw(0, 0, 7, 8, -80, ' ', self.x, self.y, 28, 32)
+        elif self.y > 300 and self.x <= 400:
+            self.image.clip_composite_draw(0, 0, 7, 8, -50, ' ', self.x, self.y, 28, 32)
         # 코트 오른쪽에 있을 때 셔틀콕 그리기
-        if self.x > 400 and self.x <= 600:
+        if self.y <= 300 and self.x > 400:
             self.image.clip_composite_draw(0, 0, 7, 8, 130, ' ', self.x, self.y, 28, 32)
-        elif self.x > 600 and self.x:
-             self.image.clip_composite_draw(0, 0, 7, 8, 80, ' ', self.x, self.y, 28, 32)
-        draw_rectangle(*self.get_bb())
+        elif self.y > 300 and self.x > 400:
+             self.image.clip_composite_draw(0, 0, 7, 8, 50, ' ', self.x, self.y, 28, 32)
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
 
@@ -62,12 +62,11 @@ class Shuttlecock_Practice:
                 self.speed_y = 0
                 self.dir = -1
                 #  셔틀콕 위치 초기화
-                self.x, self.y = random.randint(450, 500), 400
+                self.x, self.y = random.randint(450, 500), random.randint(400, 600)
                 self.is_flying = True
 
                 game_world.add_object(self, 2)
                 game_world.add_collision_pair('player1:shuttlecock', None, self)
-                game_world.add_collision_pair('player2:shuttlecock', None, self)
                 game_world.add_collision_pair('net:shuttlecock', None, self)
 
                 game_world.remove_object(self)
