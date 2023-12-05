@@ -62,7 +62,7 @@ class Shuttlecock_Practice:
                 self.speed_y = 0
                 self.dir = -1
                 #  셔틀콕 위치 초기화
-                self.x, self.y = random.randint(450, 500), 500
+                self.x, self.y = random.randint(450, 500), 400
                 self.is_flying = True
 
                 game_world.add_object(self, 2)
