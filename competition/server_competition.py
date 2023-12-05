@@ -6,9 +6,12 @@ player2_x = 600
 who_hit_shuttlecock = 'player1'
 who_get_score = 'player1'
 
-player1_score = 2
+player1_score = 0
 player2_score = 0
 
 set_num = 1
-player1_set_score = 2
+player1_set_score = 0
 player2_set_score = 0
+
+player1_powergage = 0
+player2_powergage = 0

@@ -25,8 +25,11 @@ NET_SPEED_MPM = (NET_SPEED_KMPH * 1000.0 / 60.0)
 NET_SPEED_MPS = (NET_SPEED_MPM / 60.0)
 NET_SPEED_PPS = (NET_SPEED_MPS * PIXEL_PER_METER)
 
-GRAVITY_SPEED_MPS = 9.8
-GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
+# 파워게이지 다 찼을 때 의 속도
+POWER_SPEED_KMPH = 35.0 # Km / Hour
+POWER_SPEED_MPM = (POWER_SPEED_KMPH * 1000.0 / 60.0)
+POWER_SPEED_MPS = (POWER_SPEED_MPM / 60.0)
+POWER_SPEED_PPS = (POWER_SPEED_MPS * PIXEL_PER_METER)
 
 def handle_events():
     events = get_events()
@@ -87,11 +90,19 @@ def finish():
 def update():
     game_world.update()
     shuttlecock_practice.y = max(shuttlecock_practice.y, 100)
+    server_practice.player_powergage = clamp(0, server_practice.player_powergage, 640)
+
     if game_world.collide(shuttlecock_practice, player):
         print('플레이어 라켓과 셔틀콕 충돌')
         racket_hit_sound.play()
+        server_practice.player_powergage += 200
         shuttlecock_practice.is_flying = True
-        shuttlecock_practice.speed_y = RECEIVE_SPEED_PPS
+        if server_practice.player_powergage >= 640:
+            shuttlecock_practice.speed_y = POWER_SPEED_PPS
+            server_practice.player_powergage = 0
+        else:
+            shuttlecock_practice.speed_y = RECEIVE_SPEED_PPS
+
         shuttlecock_practice.dir = 1
         shuttlecock_practice.update()
 

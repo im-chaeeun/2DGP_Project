@@ -91,10 +91,11 @@ def save():
     game = [objects, collision_pairs]
     with open('game.sav', 'wb') as f:
         pickle.dump(game, f)
-
+    pass
 
 def load():
     global objects, collision_pairs
     with open('game.sav', 'rb') as f:
         game = pickle.load(f)
         objects, collision_pairs = game[0], game[1]
+    pass

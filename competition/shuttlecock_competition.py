@@ -13,6 +13,17 @@ RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
 
+# 공 칠 때 의 속도
+RECEIVE_SPEED_KMPH = 20.0 # Km / Hour
+RECEIVE_SPEED_MPM = (RECEIVE_SPEED_KMPH * 1000.0 / 60.0)
+RECEIVE_SPEED_MPS = (RECEIVE_SPEED_MPM / 60.0)
+RECEIVE_SPEED_PPS = (RECEIVE_SPEED_MPS * PIXEL_PER_METER)
+# 파워게이지 다 찼을 때 의 속도
+POWER_SPEED_KMPH = 35.0 # Km / Hour
+POWER_SPEED_MPM = (POWER_SPEED_KMPH * 1000.0 / 60.0)
+POWER_SPEED_MPS = (POWER_SPEED_MPM / 60.0)
+POWER_SPEED_PPS = (POWER_SPEED_MPS * PIXEL_PER_METER)
+
 
 GRAVITY_SPEED_MPS = 9.8
 GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
@@ -58,9 +69,14 @@ class Shuttlecock:
             self.time += 0.1
             self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time  # 방향 나중에 곱해라
             self.y += self.speed_y * game_framework.frame_time
-            if get_time() - self.start_time > 0.6:
-                self.start_time = get_time()
-                self.speed_y -= RUN_SPEED_PPS
+            if server_competition.player1_powergage < 640 or server_competition.player2_powergage < 640:
+                if get_time() - self.start_time > 0.6:
+                   self.start_time = get_time()
+                   self.speed_y -= RECEIVE_SPEED_PPS
+            else:
+                if get_time() - self.start_time > 1.5:
+                   self.start_time = get_time()
+                   self.speed_y -= POWER_SPEED_PPS
 
             #Shuttlecock이 땅보다 아래로 떨어지지 않도록 제한
             self.y = max(self.y, 100)
@@ -110,13 +126,14 @@ class Shuttlecock:
         game_world.remove_object(self)
 
 
-        #  셔틀콕과 플레이어 위치 초기화
+        #  셔틀콕과 플레이어 위치, 파워게이지 값 초기화
         if server_competition.who_get_score == 'player1':
             self.x, self.y = 260, 265
         elif server_competition.who_get_score == 'player2':
             self.x, self.y = 540, 265
         server_competition.player1_x = 200
         server_competition.player2_x = 600
+        server_competition.player1_powergage, server_competition.player2_powergage = 0, 0
         game_world.add_object(self, 2)
         game_world.add_collision_pair('player1:shuttlecock', None, self)
         game_world.add_collision_pair('player2:shuttlecock', None, self)

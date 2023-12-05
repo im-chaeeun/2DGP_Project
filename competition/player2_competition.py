@@ -244,8 +244,7 @@ class Player2:
         # 스테미나
         self.stamina_percent, self.stamina_start_time = 640, 0
         self.stamina_image = load_image('resource/stamina.png')
-        # powergage
-        self.powergage_percent = 0
+        # powergage - 전역변수로 서버에서 관리
         self.powergage_image = load_image('resource/powergage.png')
 
     def update(self):
@@ -308,6 +307,10 @@ class Player2:
 
     def draw_stamina(self):
         self.stamina_image.clip_draw(0, 0, 333, 10, 797, 590, self.stamina_percent, 10)
+
+    def draw_powergage(self):
+        self.powergage_image.clip_draw(0, 0, 333, 10, 797, 575, server_competition.player2_powergage, 10)
+
 
     def handle_collision(self, group, other):
         pass

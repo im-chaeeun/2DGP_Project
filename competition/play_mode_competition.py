@@ -26,6 +26,13 @@ NET_SPEED_MPM = (NET_SPEED_KMPH * 1000.0 / 60.0)
 NET_SPEED_MPS = (NET_SPEED_MPM / 60.0)
 NET_SPEED_PPS = (NET_SPEED_MPS * PIXEL_PER_METER)
 
+# 파워게이지 다 찼을 때 의 속도
+POWER_SPEED_KMPH = 35.0 # Km / Hour
+POWER_SPEED_MPM = (POWER_SPEED_KMPH * 1000.0 / 60.0)
+POWER_SPEED_MPS = (POWER_SPEED_MPM / 60.0)
+POWER_SPEED_PPS = (POWER_SPEED_MPS * PIXEL_PER_METER)
+
+
 GRAVITY_SPEED_MPS = 9.8
 GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
 
@@ -91,21 +98,34 @@ def finish():
 def update():
     game_world.update()
     shuttlecock.y = max(shuttlecock.y, 100)
+    server_competition.player1_powergage = clamp(0, server_competition.player1_powergage, 640)
+    server_competition.player2_powergage = clamp(0, server_competition.player2_powergage, 640)
+
     if game_world.collide(shuttlecock, player1):
         print('플레이어1 라켓과 셔틀콕 충돌')
         racket_hit_sound.play()
+        server_competition.player1_powergage += 200
         shuttlecock.is_flying = True
         server_competition.who_hit_shuttlecock = 'player1'
-        shuttlecock.speed_y = RECEIVE_SPEED_PPS
+        if server_competition.player1_powergage >= 640:
+            shuttlecock.speed_y = POWER_SPEED_PPS
+            server_competition.player1_powergage = 0
+        else:
+            shuttlecock.speed_y = RECEIVE_SPEED_PPS
         shuttlecock.dir = 1
         shuttlecock.update()
 
     if game_world.collide(shuttlecock, player2):
         print('플레이어2 라켓과 셔틀콕 충돌')
         racket_hit_sound.play()
+        server_competition.player2_powergage += 200
         shuttlecock.is_flying = True
         server_competition.who_hit_shuttlecock = 'player2'
-        shuttlecock.speed_y = RECEIVE_SPEED_PPS
+        if server_competition.player2_powergage >= 640:
+            shuttlecock.speed_y = POWER_SPEED_PPS
+            server_competition.player2_powergage = 0
+        else:
+            shuttlecock.speed_y = RECEIVE_SPEED_PPS
         shuttlecock.dir = -1
         shuttlecock.update()
 
