@@ -268,7 +268,7 @@ class Player:
     def draw(self):
         self.state_machine.draw()
         # 충돌 체크 박스
-        # draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
         # 화살표 박스 그리기
         self.draw_arrow_box()
         # stamina

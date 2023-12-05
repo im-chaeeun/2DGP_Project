@@ -39,6 +39,7 @@ class Shuttlecock:
         self.cheering = load_wav('resource/cheering.wav')
         self.cheering.set_volume(40)
 
+
     def draw(self):
         if self.y <= 300 and self.x <= 400:
             self.image.clip_composite_draw(0, 0, 7, 8, -130, ' ', self.x, self.y, 28, 32)
@@ -69,7 +70,6 @@ class Shuttlecock:
                 self.time = 0
                 self.check_who_get_score()
                 self.cheering.play()
-
 
 
     def get_bb(self):
