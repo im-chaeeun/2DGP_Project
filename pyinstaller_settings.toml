@@ -3,13 +3,7 @@ main_file = 'main.py'
 
 # 데이타 파일들을 지정하세요.
 data_files = [
-#    'arrow_left.png', 'arrow_left_press.png', 'arrow_recieve.png',
-#    'arrow_recieve_press.png', 'arrow_right.png', 'arrow_right_press.png',
-#    'arrow_serve.png', 'arrow_serve_press.png', 'badminton_court_background.png',
-#    'character.png', 'cutiegirls.mp3', 'ENCR10B.TTF', 'football.mp3',
-#    'notice_set_num.png', 'power_gage.png', 'practice_machine.png',
-#    'ScoreBox.png', 'shuttlecock.png', 'sound_attack.wav', 'stamina.png',
-#    'title_screen.png', 'tuk_credit.png'
+
 
 ]
 
