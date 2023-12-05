@@ -232,18 +232,21 @@ class Player2:
         # 라켓의 충돌 체크 박스
         self.racket_x1, self.racket_x2, self.racket_y1, self.racket_y2 = 0, 0, 0, 0
         # 화살표 그리기 - 따로 클래스 만들면 안 돼서 player에서 그림
-        self.image_left = load_image('resource/arrow_left.png')
+        self.image_left = load_image('resource/arrow_left2.png')
         self.image_left_press = load_image('resource/arrow_left_press.png')
-        self.image_right = load_image('resource/arrow_right.png')
+        self.image_right = load_image('resource/arrow_right2.png')
         self.image_right_press = load_image('resource/arrow_right_press.png')
-        self.image_serve = load_image('resource/arrow_serve.png')
+        self.image_serve = load_image('resource/arrow_serve2.png')
         self.image_serve_press = load_image('resource/arrow_serve_press.png')
-        self.image_recieve = load_image('resource/arrow_recieve.png')
+        self.image_recieve = load_image('resource/arrow_recieve2.png')
         self.image_recieve_press = load_image('resource/arrow_recieve_press.png')
 
         # 스테미나
         self.stamina_percent, self.stamina_start_time = 640, 0
         self.stamina_image = load_image('resource/stamina.png')
+        # powergage
+        self.powergage_percent = 0
+        self.powergage_image = load_image('resource/powergage.png')
 
     def update(self):
         self.state_machine.update()
@@ -273,6 +276,8 @@ class Player2:
         self.draw_arrow_box()
         # stamina
         self.draw_stamina()
+        # power gage
+        self.draw_powergage()
 
     def get_bb(self):
         if self.state_machine.cur_state == Idle:

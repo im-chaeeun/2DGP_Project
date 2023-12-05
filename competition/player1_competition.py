@@ -245,6 +245,9 @@ class Player1:
         # 스테미나
         self.stamina_percent, self.stamina_start_time = 640, 0
         self.stamina_image = load_image('resource/stamina.png')
+        # powergage
+        self.powergage_percent = 0
+        self.powergage_image = load_image('resource/powergage.png')
 
     def update(self):
         self.state_machine.update()
@@ -273,6 +276,8 @@ class Player1:
         self.draw_arrow_box()
         # stamina
         self.draw_stamina()
+        # power gage
+        self.draw_powergage()
 
 
 
@@ -305,6 +310,10 @@ class Player1:
 
     def draw_stamina(self):
         self.stamina_image.clip_draw(0, 0, 333, 10, 0, 590, self.stamina_percent, 10)
+
+    def draw_powergage(self):
+        self.powergage_image.clip_draw(0, 0, 333, 10, 0, 575, self.powergage_percent, 10)
+
 
     def handle_collision(self, group, other):
         pass
