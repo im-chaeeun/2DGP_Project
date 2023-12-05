@@ -1,4 +1,4 @@
-import threading
+import random
 
 from pico2d import *
 import game_framework
@@ -11,8 +11,6 @@ RUN_SPEED_KMPH = 20.0   # 20km/h
 RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0  # 분당 몇 m?
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0    # 초당 몇 m?
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
-
-
 
 GRAVITY_SPEED_MPS = 9.8
 GRAVITY_SPEED_PPS = GRAVITY_SPEED_MPS * PIXEL_PER_METER
@@ -61,21 +59,18 @@ class Shuttlecock_Practice:
             if self.y == 100:
                 self.is_flying = False
                 self.time = 0
-                # self.check_who_get_score()
-                # game_world.remove_object(self)
+                self.speed_y = 0
+                self.dir = -1
+                #  셔틀콕 위치 초기화
+                self.x, self.y = random.randint(450, 500), 500
+                self.is_flying = True
 
-                #  셔틀콕과 플레이어 위치 초기화
-                if server_competition.who_get_score == 'player1':
-                    self.x, self.y = 260, 265
-                elif server_competition.who_get_score == 'player2':
-                    self.x, self.y = 540, 265
-                server_competition.player1_x = 200
-                server_competition.player2_x = 600
                 game_world.add_object(self, 2)
                 game_world.add_collision_pair('player1:shuttlecock', None, self)
                 game_world.add_collision_pair('player2:shuttlecock', None, self)
                 game_world.add_collision_pair('net:shuttlecock', None, self)
 
+                game_world.remove_object(self)
     def get_bb(self):
         return self.x - 14, self.y - 16, self.x + 14, self.y + 16
 
