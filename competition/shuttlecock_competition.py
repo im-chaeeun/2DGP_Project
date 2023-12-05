@@ -35,9 +35,9 @@ class Shuttlecock:
         self.who_hit_shuttlecock = None
         self.who_get_score = 'player1'
         self.player1_score, self.player2_score = 0, 0
-        # # 환호 소리
-        # cheering = load_music('resourse/cheering.mp3')
-        # cheering.set_volume(40)
+        # 환호 소리
+        self.cheering = load_music('resource/cheering.mp3')
+        self.cheering.set_volume(40)
     def draw(self):
         # 코트 왼쪽에 있을 때 셔틀콕 그리기
         if self.x <= 200:
@@ -68,7 +68,7 @@ class Shuttlecock:
                 self.is_flying = False
                 self.time = 0
                 self.check_who_get_score()
-                cheering.play()
+                self.cheering.play()
 
 
 

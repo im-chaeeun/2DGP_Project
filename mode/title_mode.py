@@ -1,4 +1,4 @@
-from pico2d import load_image, clear_canvas, update_canvas, get_events, SDL_KEYDOWN, SDLK_ESCAPE, load_music
+from pico2d import load_image, clear_canvas, update_canvas, get_events, SDL_KEYDOWN, SDLK_ESCAPE, load_music, load_font
 from sdl2 import SDLK_2, SDLK_1
 
 import game_framework
@@ -9,6 +9,7 @@ def init():
     global image, bgm
 
     image = load_image('resource/title_screen.png')
+
     bgm = load_music('resource/football.mp3')
     bgm.set_volume(50)
     bgm.repeat_play()
@@ -23,6 +24,10 @@ def update():
 def draw():
     clear_canvas()
     image.draw(800//2, 600//2, 800, 600)
+    font = load_font('resource/ENCR10B.TTF', 35)
+    font.draw(155, 200, 'PRESS1 - Practice Mode', (255, 255, 255))
+    font.draw(155, 160, 'PRESS2 - Competition Mode', (255, 255, 255))
+
     update_canvas()
     pass
 
